@@ -1,0 +1,195 @@
+---
+title: "Axis Limits/Values Provide Context Which Influences Magnitude Judgments"
+
+knitr:
+  opts_chunk: 
+    cache_comments: false
+    
+execute:
+  echo: false
+  warning: false
+  message: false
+  include: false
+    
+format:
+  ieee-tvcg-pdf: default
+  ieee-tvcg-html: default
+
+author:
+  - name: Duncan Bradley
+    affiliations:
+      - ref: PCHN
+    orcid: 0000-0001-7328-8779 
+    email: duncan.bradley@manchester.ac.uk
+  - name: Gabriel Strain
+    affiliations:
+      - ref: CS
+    orcid: 
+  - name: Caroline Jay
+    affiliations:
+      - ref: CS
+    orcid: 0000-0002-6080-1382
+  - name: Andrew J. Stewart
+    affiliations:
+      - ref: CS
+    orcid: 0000-0002-9795-4104 
+      
+affiliations:
+  - id: PCHN
+    name: The University of Manchester
+    department: Division of Psychology, Communication, and Human Neuroscience
+    address: Oxford Road
+    city: Manchester
+    country: UK
+    postal-code: M13 9PL
+    
+  - id: CS
+    name: The University of Manchester
+    department: Department of Computer Science
+    address: Oxford Road
+    city: Manchester
+    country: UK
+    postal-code: M13 9PL
+abstract: |
+  When visualizing data, chart designers have the freedom to choose the upper and lower limits of their numerical axes. Axis limits determine the physical positions of plotted values, and can also provide visual context, supporting comprehension. Across two experiments (total N=300), we demonstrate that axis limits affect viewers' interpretations of plotted values' magnitudes {in charts presenting data on the chance of negative events occuring}. Participants did not simply associate values presented at higher vertical positions with greater magnitudes {probabilities}. Instead, they assessed the magnitude of data points by considering them in the numerical context supplied by axis limits. Data points were considered larger when they were closer to the end of the axis associated with greater values, even when they were presented at the *bottom* of a chart. Chart designers must consider the role of their axis limits in viewers' interpretations of the magnitudes of plotted data points. We recommend displaying the range of relevant values in order to communicate the specific context for each dataset.
+keywords: "magnitude, axis range, dot plots, bias, framing effect, context, position"
+bibliography: sample.bib
+teaser:
+  image: CypressView
+  caption: | 
+  
+    .
+
+ieee-vgtc-metadata:
+  online-id: "0"
+  # please declare the paper type of your paper to help reviewers, only shown in review mode
+  # choices:
+  # * algorithm/technique
+  # * application/design study
+  # * evaluation
+  # * system
+  # * theory/model
+  paper-type: please specify
+  short-author-title: "Bradley \\MakeLowercase{\\textit{et al.}}: short title"
+  keywords: ""
+---
+
+```{r}
+#| label: setup
+set.seed(45789) # seed for random number generation
+
+# Loading packages
+library(papaja) 
+library(tidyverse) 
+library(ordinal) 
+library(patchwork)
+library(magick) 
+library(emmeans) 
+library(egg) 
+library(scales) 
+library(buildmer) 
+library(lme4)
+library(broom)
+library(insight)
+library(qwraps2)
+library(kableExtra)
+```
+
+# Introduction
+
+Context is crucial for effectively judging the magnitude of numbers. A 40% probability is twice as great as a 20% probability, but in the absence of context, it is unclear whether this value should be considered large or small. For the chance of experiencing post-surgery complications, a 40% probability may be considered large, but for the chance that a laboratory test can detect a disease, a 40% probability may be considered small.
+
+```{r}
+#| label: senators-chart
+#| fig-cap: A reproduction of a data visualisation from the New York Times. The y-axis limit is the largest possible value, rather than the largest observed value. The present study asks whether magnitude appears small because the plotted values occupy a low position, or because the plotted values are presented in the context of much larger values.
+#| include: true
+#| fig-width: 3
+#| fig-height: 2
+
+read_csv("images/senators.csv") %>%
+  ggplot(aes(x = year)) +  
+  geom_histogram(binwidth = 1, fill = "black") +
+  labs(x = NULL,
+       y = NULL,
+       caption = expression(paste("Source: Office of the Historian, ", italic("History, Art & Archives, U.S. House of Representatives")))) +
+  annotate("text", x=1905, y=75, 
+           label="Number of Black members of the U.S. Senate",
+           size = 2) +
+  scale_x_continuous(breaks = seq(1800, 
+                                  2020,
+                                  by = 20),
+                     labels = seq(1800, 
+                                  2020,
+                                  by = 20)) +
+  scale_y_continuous(breaks = seq(0, 
+                                  100,
+                                  by = 10)) +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(colour = "lightgrey"),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size = 5),
+        axis.text.x = element_text(size = 3),
+        panel.background = element_blank()) +
+  coord_cartesian(ylim = c(0, 100), 
+                  xlim = c(1789, 2024),
+                  clip = "off",
+                  expand = FALSE) + 
+  geom_hline(yintercept = 0)
+```
+
+Contextual cues may influence interpretation of magnitude in data visualizations. One such cue is the range of values on an axis, which can serve as a frame of reference for assessing whether a data point is numerically high or low. Figure \@ref(fig:senators-chart) (a reproduction of a similar bar chart from the New York Times), which plots over time the number of Black members of the U.S. senate [@history_art__archives_us_house_of_representatives_office_of_the_historian_black-american_nodate], provides a striking illustration. Unusually, the continuous y-axis does not terminate just above the highest plotted value. Instead, it extends all the way to the maximum possible number of senators: 100. As a result, bars representing Black senators are confined to the very bottom, visible just above the x-axis, and a significant expanse of blank space looms above them. This highlights the absent data points: the vast majority of senators who are not Black. The chart communicates the magnitude of the plotted values in context.
+
+It is unclear exactly how a viewer's inferences about magnitude might be influenced by axis range. Different axis limits will present the data points at different positions, so one possible explanation is that viewers may interpret the magnitude of data points at higher positions as 'high' and those at lower positions as 'low'. Alternatively, the axis may indicate a range of relevant values: plotted values may be judged as small in magnitude when the potential for larger values is clearly displayed. The present pair of experiments demonstrates the influence of axis limits on interpretations and explores which of these two accounts best explains how axis limits contribute to the communication of magnitude.
+
+**Overview**: In two experiments, we manipulated the axis limits surrounding plotted data. The same data points either appeared close to the upper end of an axis range, or close to the lower end. Likert scale ratings of values' magnitudes were higher when data points were positioned close to the end of the axis which was associated with higher numbers. By employing both charts with conventional and inverted orientations to distinguish between possible explanations, we reveal that magnitude judgments are influenced by data points' relative position within the range of axis values.
+
+# Related Work
+
+## Effects of Axis Limits on Comparison Judgments
+
+Several studies have explored the role of axis limits in data visualization. This work has typically focused on how axis limits can alter impressions of the *difference between* presented values. For example, when axis ranges are expanded to create blank space around a cluster of data points, correlation between those points is judged as stronger \[\@cleveland*variables*1982\]. Participants rate the differences between values in bar charts as greater when the vertical gap between bars is larger, due to a truncated y-axis \[\@pandey*how*2015\].
+
+Correll et al.'s \[\@correll*truncating*2020\] experiments found that greater truncation resulted in higher effect-size judgments in both line charts and bar charts. They found no reduction in effect size judgments when truncation was communicated using graphical techniques (e.g., axis breaks and gradients). Truncation effects persisted even when participants estimated the values of specific data points. This suggests the bias is driven by initial impressions, rather than a misinterpretation of the values portrayed by graphical markings. The unavoidable consequence, Correll et al. suggest, is that designers' choices will influence viewers' interpretations whether axes are truncated or not.
+
+Choosing an appropriate axis range involves a trade-off between participants' bias (over-reliance on the visual appearance of differences) and their sensitivity (capacity to identify actual differences) \[\@witt*graph*2019\]. Just as a highly truncated y-axis can exaggerate trivial differences between values, an axis spanning the entire range of possible values can conceal important differences. Based on participants' judgments of effect size, \@witt*graph*2019 found that bias was reduced and sensitivity increased when using an axis range of approximately 1.5 standard deviations of the plotted data, compared to axes which spanned only the range of the data, or the full range of possible values. This provides further evidence of a powerful association between the appearance of data, when plotted, and subjective interpretations of differences between data points.
+
+Further evidence of truncation effects, provided by \@yang*truncating*2021 improves on the design of previous studies which employed only a few observations per condition \[\@pandey*how*2015\] or very small sample sizes \[\@witt*graph*2019\]. Participants' ratings of the difference between two bars consistently provided evidence of the exaggerating effects of y-axis truncation. \@yang*truncating*2021 noted that increasing awareness does not eliminate this effect, which may function like an anchoring bias, where numerical judgments are influenced by reference points \[\@tversky*judgment*1974\]. Another potential explanation discussed draws upon Grice's cooperative principle \[\@grice*logic*1975\]. According to this account of effective communication, speakers are assumed to be in cooperation, and so will communicate in a manner that is informative, truthful, relevant, and straightforward. Analogously, a viewer will assume that a numerical difference in a chart must be genuinely large if it appears large, else it would not be presented that way. Effective visualizations should be designed so a viewer's instinctive characterization of the data corresponds closely to their interpretation following a more detailed inspection \[\@yang*truncating*2021\].
+
+## Effects of Axis Limits on Magnitude Judgments
+
+The above research consistently demonstrates that the magnitude of *the difference between values* is interpreted differently depending on the axis limits employed. The present investigation is concerned with how interpretations of the magnitude of *the values themselves* are affected by a chart's design.
+
+Empirical evidence demonstrates that judgment of a value's magnitude can depend on its relationship to a grand total or to surrounding values. This can influence interpretation of verbal approximations, and also absolute values. For example, participants instructed to take 'a few' marbles picked up more when the total number available was larger \[\@borges*common*1974\] and rated satisfaction with the same salary as higher when it appeared in the upper end of a range, compared to the lower end \[\@brown*does*2008\]. As well as context, vertical position also plays a role in magnitude judgments. For example, children appear to intuitively understand the relationship between height and value \[\@gattis*structure*2002\]. Both the physical world, and language (e.g., spatial metaphors), provide countless examples where 'higher' is associated with 'more', and 'lower' with 'less', and this principle has been adopted as a convention in data visualization \[\@tversky*cognitive*1997\].
+
+In charts, inversions of the typical mapping between magnitude and vertical position charts can lead to misinterpretations \[\@okan*when*2012; \@pandey*how*2015; \@woodin*conceptual*2022\]. Furthermore, when a company's financial performance was displayed entirely in the bottom fifth of a line chart, the company was perceived as less successful compared to when the axis did not extend above the maximum value \[\@taylor*misleading*1986\]. \@sandman*high*1994 investigated assessments of magnitude in risk ladders, where greater risks are presented at physically higher positions on a vertical scale. Participants rated asbestos exposure as a greater threat when it was plotted at a higher position, compared to a lower position.
+
+The above findings can be regarded as preliminary evidence that changing axis limits may affect appraisals of data points' magnitudes. However, the evidence is not substantial. \@taylor*misleading*1986 did not disclose how judgments were elicited, or provide details of their sample size. \@sandman*high*1994 only explored responses to one specific risk (asbestos), and each participant only took part in a single trial. Their perceived threat measure was a composite of several separate ratings, preventing diagnosis of whether manipulations affected interpretations of the plotted information in particular, or just related concepts. Further, both studies introduced a confounding variable by adjusting the difference between the minimum and maximum y-axis values across conditions. Stronger evidence is required regarding how axis limits may bias inferences about magnitude, and the cognitive mechanisms involved in generating these inferences.
+
+## Judgments of Risk Magnitude
+
+In the present study, participants viewed charts showing fictitious data on the chance of negative outcomes occurring (i.e., scenarios involving risk). Risk events are composed of two core components: 1) chance of occurrence and 2) outcome magnitude (severity). Individuals' assessments of chance and severity are not necessarily independent. Events are perceived as more likely when they are described as having more severe consequences \[\@harris*estimating*2009; \@harris*communicating*2011\]. In a similar manner, events are associated with more substantial consequences when they are described as more likely \[\@kupor*probable*2020\].
+
+One account suggests that perceptions of probability and outcome magnitude are related because they are both assumed to reflect the potency of the event's cause (probability-outcome correspondence principle; \[\@keren*probabilityoutcome*2001\]. According to this account, probabilities can occasionally provide meaningful indications of outcome magnitude (e.g., rainfall), but it is inappropriate to apply this perspective to all situations (e.g., volcanic eruptions). Therefore, even though charts in the present study only display the *chance* of events occurring, assessments of the *severity* of events' consequences may also differ between conditions. Collecting separate judgments of chance and severity of consequences for each scenario provides a clearer picture of how the manipulation affects distinct aspects of participants' representations of risk. Use of Likert scales (with discrete options) rather than visual analogue scales (with continuous options; \[\@sung*visual*2018\]) prevents participants from simply mapping probability percentages directly onto a linear scale.
+
+## Data Visualization Literacy
+
+When faced with charts that violate graphical conventions by using atypical scales, individuals with low literacy are more likely to draw on data points' physical positions when making inferences about their magnitudes \[\@okan*how*2016; \@okan*when*2012\]. We administered Garcia-Retamero et al.'s [-@garcia-retamero2016] subjective graph literacy measure to determine whether responses to our manipulation of axis limits are associated with data visualization literacy.
+
+# General Discussion
+
+Given the use of data visualization for reliable communication of numerical information, understanding how design choices affect interpretations is an important matter. Through a pair of experiments, we demonstrate that judgments of data points' magnitudes are influenced by a chart's axis limits. These experiments provide insight into the cognitive processes involved in assessing magnitudes in data visualisations. We manipulated the range of values on the axis accompanying plotted data, which affected the numerical context in which data appeared and the physical position of data points. However, regardless of their physical positions, data points were associated with greater magnitudes when they appeared close to end of the axis associated with higher values. This highlights viewers' sensitivity to the framing of values presented in charts.
+
+Interpretation of *the same* absolute value is biased by its relative position. The impact of surrounding information on assessments of data is an example of a framing effect. We illustrate that this effect occurs in the absence of contrasting data points: the presence of blank space is sufficient for informing magnitude judgments.
+
+# Relationship to Prior Work
+
+The present data complement findings from research on y-axis truncation, which has observed that axis limits accompanying plotted values can influence viewers' impressions of those values. While previous investigations have shown that *comparisons* of plotted values are affected by y-axis limits \[\@pandey*how*2015, \@correll*truncating*2020; \@witt*graph*2019; \@yang*truncating*2021\], the present findings show that they also influence *magnitude judgments*. This finding supports the notion that viewers are sensitive to visualization rhetoric, which involves provoking a specific interpretation through a particular presentation of numerical information \[\@hullman*visualization*2011\].
+
+A previous study addressing a similar question also concluded that a data point's location within a range of values affects interpretation of its magnitude \[\@sandman*high*1994\]. The present study builds upon this research by identifying the mechanism behind this effect and removing the confound of variable axes ranges. It also extends the finding beyond a single scenario (asbestos) to a wider range of situations. By analyzing different types of judgment separately, rather than using a combined measure, we verify that axis limits affect interpretations of the specific variable displayed in a chart.
+
+# Experiments
+
+Keep this brief - what is necessary and what can't go into the methods section?
+
+Justify decisions
