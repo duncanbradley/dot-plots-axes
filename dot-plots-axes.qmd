@@ -54,6 +54,8 @@ abstract: |
   When visualizing data, chart designers have the freedom to choose the upper and lower limits of their numerical axes. Axis limits determine the physical positions of plotted values, and can also provide visual context, supporting comprehension. Across two experiments (total N=300), we demonstrate that axis limits affect viewers' interpretations of plotted values' magnitudes {in charts presenting data on the chance of negative events occuring}. Participants did not simply associate values presented at higher vertical positions with greater magnitudes {probabilities}. Instead, they assessed the magnitude of data points by considering them in the numerical context supplied by axis limits. Data points were considered larger when they were closer to the end of the axis associated with greater values, even when they were presented at the *bottom* of a chart. Chart designers must consider the role of their axis limits in viewers' interpretations of the magnitudes of plotted data points. We recommend displaying the range of relevant values in order to communicate the specific context for each dataset.
 keywords: "magnitude, axis range, dot plots, bias, framing effect, context, position"
 bibliography: sample.bib
+link_citations: true
+
 teaser:
   image: CypressView
   caption: | 
@@ -100,7 +102,7 @@ library(kableExtra)
 Context is crucial for effectively judging the magnitude of numbers. A 40% probability is twice as great as a 20% probability, but in the absence of context, it is unclear whether this value should be considered large or small. For the chance of experiencing post-surgery complications, a 40% probability may be considered large, but for the chance that a laboratory test can detect a disease, a 40% probability may be considered small.
 
 ```{r}
-#| label: senators-chart
+#| label: fig-senators-chart
 #| fig-cap: A reproduction of a data visualisation from the New York Times. The y-axis limit is the largest possible value, rather than the largest observed value. The present study asks whether magnitude appears small because the plotted values occupy a low position, or because the plotted values are presented in the context of much larger values.
 #| include: true
 #| fig-width: 3
@@ -138,7 +140,7 @@ read_csv("images/senators.csv") %>%
   geom_hline(yintercept = 0)
 ```
 
-Contextual cues may influence interpretation of magnitude in data visualizations. One such cue is the range of values on an axis, which can serve as a frame of reference for assessing whether a data point is numerically high or low. Figure \@ref(fig:senators-chart) (a reproduction of a similar bar chart from the New York Times), which plots over time the number of Black members of the U.S. senate [@history_art__archives_us_house_of_representatives_office_of_the_historian_black-american_nodate], provides a striking illustration. Unusually, the continuous y-axis does not terminate just above the highest plotted value. Instead, it extends all the way to the maximum possible number of senators: 100. As a result, bars representing Black senators are confined to the very bottom, visible just above the x-axis, and a significant expanse of blank space looms above them. This highlights the absent data points: the vast majority of senators who are not Black. The chart communicates the magnitude of the plotted values in context.
+Contextual cues may influence interpretation of magnitude in data visualizations. One such cue is the range of values on an axis, which can serve as a frame of reference for assessing whether a data point is numerically high or low. @fig-senators-chart (a reproduction of a similar bar chart from the New York Times), which plots over time the number of Black members of the U.S. senate [@history_art__archives_us_house_of_representatives_office_of_the_historian_black-american_nodate], provides a striking illustration. Unusually, the continuous y-axis does not terminate just above the highest plotted value. Instead, it extends all the way to the maximum possible number of senators: 100. As a result, bars representing Black senators are confined to the very bottom, visible just above the x-axis, and a significant expanse of blank space looms above them. This highlights the absent data points: the vast majority of senators who are not Black. The chart communicates the magnitude of the plotted values in context.
 
 It is unclear exactly how a viewer's inferences about magnitude might be influenced by axis range. Different axis limits will present the data points at different positions, so one possible explanation is that viewers may interpret the magnitude of data points at higher positions as 'high' and those at lower positions as 'low'. Alternatively, the axis may indicate a range of relevant values: plotted values may be judged as small in magnitude when the potential for larger values is clearly displayed. The present pair of experiments demonstrates the influence of axis limits on interpretations and explores which of these two accounts best explains how axis limits contribute to the communication of magnitude.
 
@@ -168,13 +170,252 @@ The above findings can be regarded as preliminary evidence that changing axis li
 
 ## Judgments of Risk Magnitude
 
-In the present study, participants viewed charts showing fictitious data on the chance of negative outcomes occurring (i.e., scenarios involving risk). Risk events are composed of two core components: 1) chance of occurrence and 2) outcome magnitude (severity). Individuals' assessments of chance and severity are not necessarily independent. Events are perceived as more likely when they are described as having more severe consequences \[\@harris*estimating*2009; \@harris*communicating*2011\]. In a similar manner, events are associated with more substantial consequences when they are described as more likely \[\@kupor*probable*2020\].
+In the present study, participants viewed charts showing fictitious data on the chance of negative outcomes occurring (i.e., scenarios involving risk). This provided participants with a purpose; evaluating information about risks is a more meaningful task than assessing how 'large' an abstract value is.
+
+We employed simple dot plots to convey percentages, avoiding complications from manipulating charts with additional encoding channels (e.g., bar charts). Recommendations for communicating risks suggest that the uncertainty should be explicitly encoded and discrete outcomes displayed (refs). Representing each estimate with a single dot on a percentage probability scale violates this guidance. Therefore, we do not consider the visualizations in this set of experiments reflective of best practice for visualizing probabilistic information.
+
+Whilst our focus is on communication of numerical information generally, rather than risk specifically, we nonetheless sought to examine cognitive processes related to risk judgments. Risk events are composed of two core components: 1) chance of occurrence and 2) outcome magnitude (severity). Individuals' assessments of chance and severity are not necessarily independent. Events are perceived as more likely when they are described as having more severe consequences \[\@harris*estimating*2009; \@harris*communicating*2011\]. In a similar manner, events are associated with more substantial consequences when they are described as more likely \[\@kupor*probable*2020\].
 
 One account suggests that perceptions of probability and outcome magnitude are related because they are both assumed to reflect the potency of the event's cause (probability-outcome correspondence principle; \[\@keren*probabilityoutcome*2001\]. According to this account, probabilities can occasionally provide meaningful indications of outcome magnitude (e.g., rainfall), but it is inappropriate to apply this perspective to all situations (e.g., volcanic eruptions). Therefore, even though charts in the present study only display the *chance* of events occurring, assessments of the *severity* of events' consequences may also differ between conditions. Collecting separate judgments of chance and severity of consequences for each scenario provides a clearer picture of how the manipulation affects distinct aspects of participants' representations of risk. Use of Likert scales (with discrete options) rather than visual analogue scales (with continuous options; \[\@sung*visual*2018\]) prevents participants from simply mapping probability percentages directly onto a linear scale.
 
 ## Data Visualization Literacy
 
-When faced with charts that violate graphical conventions by using atypical scales, individuals with low literacy are more likely to draw on data points' physical positions when making inferences about their magnitudes \[\@okan*how*2016; \@okan*when*2012\]. We administered Garcia-Retamero et al.'s [-@garcia-retamero2016] subjective graph literacy measure to determine whether responses to our manipulation of axis limits are associated with data visualization literacy.
+When faced with charts that violate graphical conventions by using atypical scales, individuals with low literacy are more likely to draw on data points' physical positions when making inferences about their magnitudes \[\@okan*how*2016; \@okan*when*2012\]. We administered Garcia-Retamero et al.'s [-@garcia-retamero2016] subjective graph literacy measure to determine whether responses to our manipulation of axis limits were associated with data visualization literacy.
+
+# Experiments
+
+We conducted two experiments manipulating y-axis limits in visualizations of fictitious data. This manipulation altered the physical positions of data points in a chart, but crucially the numerical values themselves remained the same.
+
+Experiment 1 sought to establish whether y-axis limits affected magnitude judgments. To provide context for participants, text accompanying the charts outlined (fictitious) scenarios involving a specific risk (e.g., loss on financial investment, delayed flights, etc.). Three plotted data points in each chart represented the chance of the negative outcome occurring (%) for three instances associated with the scenario (e.g., three investment opportunities, three airlines, etc.).
+
+Experiment 2 used the same y-axis manipulation as Experiment 1, but in charts with inverted y-axis orientation, where data points at lower physical positions represented greater values. This allowed us to investigate whether magnitude judgments were driven by data points' absolute positions, or their relative positions within the context of the axis limits. Our use of inverted charts should not be considered an endorsement (see issues above). They serve to distinguish between two possible explanations, since they reverse the typical associations between physical position and magnitude.
+
+Ethical approval was granted by The University of Manchester's Division of Neuroscience & Experimental Psychology Ethics Committee (Experiment 1: Ref 2021-11115-18258; Experiment 2: Ref. 2021-11115-20745).
+
+## Experiment 1
+
+### Method
+
+#### Materials
+
+##### **Datasets**
+
+For each dataset, we generated three values from a normal distribution. Population means were specified manually in order to represent plausible values for the probability of the event occurring (XX% - XX-%). Population standard deviation was XX for all datasets. The same dataset was employed for both of the experimental conditions associated with a given risk scenario.
+
+##### **Charts**
+
+```{r}
+#| label: fig-example
+#| fig.cap: "Example Charts. The 'high physical position' condition (left) presents data points near the top of the chart; the 'low physical position' condition (right) presents the same data points near the bottom of the chart."
+#| include: true
+#| out-width: "300px"
+#| out-height: "200px"
+# fig-width/height seems to make no difference to the dimensions of this image - is there a way to automatically extra the aspect ratio? commenting one argument doesn't achieve this
+# not sure why this is showing as Fig. 3 rather than Fig. 2
+# combine the two images of the charts in the two separate conditions
+img1 <- image_read("images/E23_hi.png")
+img2 <- image_read("images/E23_lo.png")
+image_append(c(img1, img2))
+```
+
+Datasets were displayed using dot plots. In experimental trials (n = 40), upper and lower axis limits were manipulated such that data points either appeared in the top third of the chart (high physical position: @fig-example , left) or in the bottom third (low physical position: @fig-example, right).
+
+The y-axis range in each chart was 10 percentage points. Horizontal gridlines appeared at one-unit increments. The gridlines 1.5 percentages points from the extremes were labelled with numerical values.
+
+Filler trials (n = 15) and attention check trials (n = 5) presented data points in the middle third of the chart. Filler trials employed this additional variation to prevent participants from identifying the purpose of the study.
+
+#### Procedure
+
+The experiment was programmed in PsychoPy (version 2021.1.4, @peirce2019 and hosted on pavlovia.org. Participants were instructed to complete the experiment on a desktop computer or laptop, not a tablet or mobile phone. Instructions explained that their task involved assessing the chance and severity of negative outcomes in various scenarios involving risks and noted that some scenarios might appear similar to other scenarios. Participants were asked to complete the task as quickly and accurately as possible. Two practice trials preceded the experiment proper.
+
+Participants provided two responses in each trial: a rating of the chance of the negative event occurring; and a rating of the severity of the consequences if that negative event occurred. Both 7-point Likert scales had two anchors at their extremes: *'Very unlikely'* and *'Very likely'*; for the 'Chance' scale and *'Very mild'* to *'Very severe'*. for the 'Severity' scale. All other points were unlabeled. Text specified that answers should be given in response to the plotted data (e.g., *"If you camp on one of these days..."*). The term 'chance' was used instead of 'probability' to avoid confusion with the standard 0-1 scale for probabilities, and to reflect casual usage.
+
+Participants could change their responses as many times as they wished before proceeding to the next trial, but could not return to previous trials. In attention check trials, participants were instructed not to attend to the chart, and instead to provide specified responses on the Likert scales.
+
+Before exiting the experiment, participants were informed that all presented data were fictitious and guidance was provided in case of distress.
+
+#### Design
+
+We employed a repeated-measures, within-participants design. In experimental trials, participants encountered each scenario twice: once with data presented at a high physical position and once with data presented at a low physical position.
+
+Materials were divided into two lists to minimize the likelihood of different versions of the same scenario appearing in close succession. One list contained half of the high-condition items and half of the low-condition items for the experimental scenarios. The other list contained the alternate versions of each of the experimental scenarios. Fillers and attention check questions were split between the two lists, and did not appear more than once. The order of the two lists was counterbalanced across participants. Within each list, scenarios were presented in a random order.
+
+#### Participants
+
+The experiments were advertised on Prolific.co, a platform for recruiting participants for online studies. Normal or corrected-to-normal vision and English fluency were required for participation.
+
+## Analysis Technique
+
+Analyses were conducted using R (version 4.1.2, \[\@r*core*team*r*2021\]).
+
+Likert scales express granularity at the level of ordinal data. They record whether one rating is higher or lower than than another, but not the magnitude of this difference. Therefore, Likert scales do not capture values from latent distributions (mental representations) in a linear manner. The distance between one pair of points and another pair may appear equal, but may represent different distances on the latent distribution. Therefore, it is inappropriate to analyse Likert scale data with metric models, such as linear regression \[\@liddell*analyzing*2018\]. Throughout this paper, we construct cumulative link mixed-effects models, using the *ordinal* package (version 2019.12-10, \[\@christensen*ordinalregression*2019\]) to analyse Likert scale ratings.
+
+Selection of model random effects structures was automated using the *buildmer* package in R (version 2.3, \[\@voeten*buildmer*2022\]). The maximal random effects structure included random intercepts for participants and scenarios, plus corresponding slopes for fixed effects terms \[\@barr*random*2013\]. *buildmer* initially identified the most complex model which could successfully converge. It subsequently removed terms which did not contribute substantially to explaining variance in ratings.
+
+## Results
+
+## Discussion
+
+# Experiment 2
+
+## Introduction
+
+Experiment 1 (E1) found that participants associated data points with greater magnitudes when those data points were positioned near the *top* of a chart, compared to when the same data points were positioned near the *bottom* of a chart.
+
+One possible explanation for this finding is that participants made simple associations between absolute position and magnitude, equating physically higher data points with larger magnitudes and physically lower data points with smaller magnitudes. This relates to well-established conceptual metaphors for magnitude, where greater vertical positions denote greater magnitudes [@tversky_cognitive_1997].
+
+An alternative explanation is that participants used the y-axis as a frame of reference for assessing the magnitude of plotted values. For example, when considering data points at the near the bottom of the axis, participants may have recognized the potential for values larger than those observed, consequently associating plotted values with smaller magnitudes.
+
+E1 does not provide a means of differentiating these competing explanations. Drawing inferences from data points' absolute positions would bias magnitude judgments in the same direction as drawing inferences from their relative positions. A high magnitude is implied by a data point's high physical position *and* its superior position in the context other of presented values. Therefore, an additional experiment is required in order to distinguish between the two competing explanations.
+
+Inverting a vertical axis changes the relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. This is illustrated in @fig-rationale-plot. Therefore, inferences invoking relative numerical position would elicit a bias magnitude judgments in the opposite direction compared to inferences invoking data points' physical positions.
+
+In E2, we manipulate data points' physical positions by changing axis limits (as in E1), but employ inverted axes. This allows us to identify the mechanism responsible for the previously observed bias in magnitude judgments. Use of absolute position would be indicated by higher magnitude ratings for data points at *high* physical positions (mirroring the finding for conventional charts). Alternatively, use of relative numerical position would be indicated by higher magnitude ratings for data points at *low* physical positions (the reverse of the finding for conventional charts).
+
+Previous research suggests that charts with inverted axes can be prone to misinterpretation when viewers are not informed about the inversion (@pandey_how_2015; @woodin_conceptual_2022). Therefore, we provided explicit instruction to ensure participants were aware that inverted charts were presented.
+
+```{r}
+#| label: fig-rationale-plot
+#| fig.cap: "Rationale for Experiment 2: Distinguishing the Roles of Absolute and Relative Position. In charts with conventional axis orientations (left column), there is congruity between data points’ absolute positions and their relative positions in the chart. In charts with inverted axis orientations (right column), there is incongruity between data points’ absolute positions and their relative positions in the chart. For example, at high absolute positions in conventional charts (top left), data points are relatively higher than implied alternatives. But at the same absolute positions, in inverted charts, the same values are relatively lower than alternatives (top right)."
+#| include: true
+#| fig-width: 3
+#| fig-height: 2
+# visualizing the similarities/differences between absolute and relative position in conventional and inverted charts
+
+# create my theme
+my_theme <- function() {
+  theme_minimal(base_size = 8) + # originally 12
+    theme(panel.border = element_rect(fill = NA, size = 1),
+          panel.grid.minor = element_blank(),
+          panel.grid.major = element_blank(),
+          axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_text(size = 10, face = "bold"),
+          axis.text.y = element_text(size = 15, colour = "black", face = "bold"),
+          plot.title = element_text(face = "bold"),
+          aspect.ratio = 4.5/3,
+    )
+}
+
+# generate example data
+x <- c('A','B','C')
+y <- c(38, 38.2, 37.8)
+
+df <- as_tibble(cbind(x, y)) %>%
+  mutate_at(vars("y"), as.numeric)
+
+data_mean <- 38
+
+# dataframe with four possible combinations of conditions
+id <- expand_grid(c("hi", "lo"), c("conventional", "inverted"))
+
+create_plot <- function(pos, orientation){
+
+  # set upper and lower limits around the population mean of the data, depending on conditions
+  lower_lim <- case_when(pos == "lo" & orientation == "conventional" ~ data_mean - 1.5, 
+                         pos == "hi" & orientation == "conventional" ~ data_mean - 8.5,
+                         pos == "lo" & orientation == "inverted" ~ data_mean - 8.5, 
+                         pos == "hi" & orientation == "inverted" ~ data_mean - 1.5)
+  upper_lim <- case_when(pos == "lo" & orientation == "conventional" ~ data_mean + 8.5, 
+                         pos == "hi" & orientation == "conventional" ~ data_mean + 1.5,
+                         pos == "lo" & orientation == "inverted" ~ data_mean + 1.5, 
+                         pos == "hi" & orientation == "inverted" ~ data_mean + 8.5)
+  
+  # set the values for other variables
+  
+  # y_order = the order for the two y-axis value labels (bottom, top)
+  y_order <- case_when(orientation == "conventional" ~ c(lower_lim, upper_lim),
+                       orientation == "inverted" ~ c(upper_lim, lower_lim))
+  
+  # axis_transform = reverse axis or not
+  axis_transform <- case_when(orientation == "conventional" ~ "identity",
+                              orientation == "inverted" ~ "reverse")
+  
+  # background colour
+  fill_colour <- case_when(orientation == "conventional" ~ "white",
+                           orientation == "inverted" ~ "grey")
+  
+  # opacity of dividing line
+  divider_alpha <- case_when(orientation == "conventional" ~ 1,
+                           orientation == "inverted" ~ 0)
+  
+  # text which states whether values are higher or lower than implied alternatives
+  comparison_text <- case_when(pos == "lo" & orientation == "conventional" ~ "LOWER", 
+                               pos == "hi" & orientation == "conventional" ~ "HIGHER",
+                               pos == "lo" & orientation == "inverted" ~ "HIGHER", 
+                               pos == "hi" & orientation == "inverted" ~ "LOWER")
+  
+  # position of comparison text in between data points and farthest limits
+  text_pos <- min(upper_lim, lower_lim) + 
+    (max(upper_lim, lower_lim) - min(upper_lim, lower_lim))/2
+
+  # start and end points for direction arrow at the side
+  arrow_start <- lower_lim +2.5
+  arrow_end <- upper_lim -2.5
+  
+  # create the plot
+  g <- df %>% ggplot(aes(x = x,
+                         y = y)) + 
+    geom_point(size = 4) + 
+    ylab("") +
+    coord_cartesian(ylim = y_order, 
+                    xlim = c(0.5, 3.5), 
+                    clip = "off",
+                    expand = FALSE) +
+    geom_segment(aes(x = -0.21, xend = -0.21, # specifying the vertical arrow
+                     y = arrow_start,
+                     yend = arrow_end),
+                 arrow = arrow(length = unit(0.5,"cm")), size = 1.2, colour = "black") +
+        geom_segment(aes(x = -1, xend = -1, 
+                     y = -Inf,
+                     yend = Inf), alpha = divider_alpha, size = 1) + 
+    geom_label(aes(x = 2, y = text_pos), label = paste("Plotted data\n", comparison_text, "than\nalternatives"), fill = "lightgrey") + 
+    scale_y_continuous(breaks = seq(lower_lim + 1.5, # breaks where the y-axis labels will be
+                                    upper_lim - 1.5,
+                                    by = 7),
+                       labels = percent_format(scale = 1, accuracy = 1),
+                       trans = axis_transform) + # y-axis labels
+    my_theme() +
+    theme(plot.background = element_rect (fill = fill_colour, color = 'black')) 
+  
+  
+  assign(value = g, envir = .GlobalEnv, paste0("g", 
+                                               substr(pos, 1, 1),
+                                               substr(orientation, 1, 1)))
+  
+}
+
+# run the above function for every combination of conditions
+invisible(do.call(mapply, c(create_plot, unname(id))))
+
+# add all four plots together, with addition y-axis labels
+ghc +  ggtitle('Conventional') + ylab("HIGH\nPhysical Position\n\n") +
+  ghi + ggtitle('Inverted') + glc + ylab("LOW\nPhysical Position\n\n") + gli 
+
+```
+
+## Method
+
+### Materials
+
+Materials were identical to E1, except for the inversion of the y-axis in all charts, including practice trials.
+
+### Procedure
+
+The experiment used PsychoPy version 2021.2.3. One slide in the instructions explained to participants how charts with inverted axes function: *"In all graphs in this experiment, the arrow on the 'Chance' axis points downwards, meaning the numbers get bigger as the axis goes down."*. Otherwise, the procedure was identical to E1.
+
+### Design
+
+As in E1, we employed a repeated-measures, within-participants design.
+
+### Participants
+
+A viral social media post on 24th July 2021 endorsing the Prolific.co attracted many new users from a narrow demographic, skewing studies' participant distributions (ref). Therefore, the experiment was not advertised to users who signed-up to Prolific.co after 24th July 2021, or to those who had participated in E1.
+
+Data were returned by 161 participants. Ten participants' submissions were rejected because they answered more than two of 10 attention check questions incorrectly. One additional participant was excluded from the final dataset because they exceeded the maximum completion time (87 minutes). This left a total of 150 participants whose submissions were used for analysis: (`r #printnum(gender_r3$M)`% male, `r #printnum(gender_r3$F)`% female). Mean age was `r #printnum(age_r3$mean)` (*SD* = `r #printnum(age_r3$sd)`)[^1]. `r #printnum(edu_r3$n, digits = 0)`% had completed at least secondary education. The mean graph literacy score was `r #printnum(literacy_r3$mean)` (*SD* = `r #printnum(literacy_r3$sd)`). Participants whose submissions were approved were paid £3.45, and average completion time was `r #printnum(time_r3$mean, digits = 0)` minutes.
+
+[^1]: Age data were unavailable for two participants, but was available for all other participants in the dataset.
 
 # General Discussion
 
@@ -182,14 +423,8 @@ Given the use of data visualization for reliable communication of numerical info
 
 Interpretation of *the same* absolute value is biased by its relative position. The impact of surrounding information on assessments of data is an example of a framing effect. We illustrate that this effect occurs in the absence of contrasting data points: the presence of blank space is sufficient for informing magnitude judgments.
 
-# Relationship to Prior Work
+## Relationship to Prior Work
 
 The present data complement findings from research on y-axis truncation, which has observed that axis limits accompanying plotted values can influence viewers' impressions of those values. While previous investigations have shown that *comparisons* of plotted values are affected by y-axis limits \[\@pandey*how*2015, \@correll*truncating*2020; \@witt*graph*2019; \@yang*truncating*2021\], the present findings show that they also influence *magnitude judgments*. This finding supports the notion that viewers are sensitive to visualization rhetoric, which involves provoking a specific interpretation through a particular presentation of numerical information \[\@hullman*visualization*2011\].
 
 A previous study addressing a similar question also concluded that a data point's location within a range of values affects interpretation of its magnitude \[\@sandman*high*1994\]. The present study builds upon this research by identifying the mechanism behind this effect and removing the confound of variable axes ranges. It also extends the finding beyond a single scenario (asbestos) to a wider range of situations. By analyzing different types of judgment separately, rather than using a combined measure, we verify that axis limits affect interpretations of the specific variable displayed in a chart.
-
-# Experiments
-
-Keep this brief - what is necessary and what can't go into the methods section?
-
-Justify decisions
