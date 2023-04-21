@@ -319,7 +319,7 @@ anova_results <- function(model, cmpr_model) {
 # this function extracts test statistics and p values from model summaries
 summary_extract <- function(model, key_term) {
   
-  params <- c("statistic", "p.value")
+  params <- c("statistic", "p.value", "estimate")
 
   model_name <- deparse(substitute(model))
   
@@ -336,6 +336,11 @@ summary_extract <- function(model, key_term) {
     }
 
     lapply(params, get_cols)
+    
+    
+    assign(value = confint(model)[key_term,],
+           envir = .GlobalEnv,
+           paste0(model_name, ".CI"))
 
 }
 ```
@@ -649,7 +654,7 @@ add_header_above(kable(random_str(E1_c), "latex"), "E1_c")
 
 @fig-E1-c plots the distribution of participants' ratings of data points' magnitudes, for data points presented at high and low physical positions. A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect ($\chi^2$(`r in_paren(E1_c.df)`) = `r printnum(E1_c.LR)`, p `r printp(E1_c.p, add_equals = TRUE)`). Data points' magnitudes were rated as greater when those data points were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_c.statistic))`, p `r printp(E1_c.p.value, add_equals = TRUE)`). 
 
-The odds ratio for the difference between conditions is `r printnum(exp(E1_c@model$beta))`. Participants were `r round(exp(E1_c@model$beta), 1)` times more likely to award a higher magnitude rating to data points presented at high positions than low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E1_c@model$beta)))`. 
+The odds ratio for the difference between conditions is `r printnum(exp(E1_c.estimate))`, `r print_confint(exp(E1_c.CI))`. Participants were `r round(exp(E1_c.estimate), 1)` times more likely to award a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E1_c.estimate)))`. 
 
 This model employed random intercepts for each scenario and each participant. Estimated marginal means, calculated using the *emmeans* package (version 1.7.0, [@lenth_emmeans_2021]) for these ratings are plotted in @fig-E1-c-emm.
 
@@ -729,7 +734,7 @@ add_header_above(kable(random_str(E1_s), "latex"), "E1_s")
 
 For ratings of the severity of consequences, a likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include condition as a fixed effect: ($\chi^2$(`r in_paren(E1_s.df)`) = `r printnum(E1_s.LR)`, p `r printp(E1_s.p, add_equals = TRUE)`). The severity of consequences was rated as greater when data points representing the chance of an event occurring were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_s.statistic))`, p `r printp(E1_s.p.value, add_equals = TRUE)`). 
 
-The odds ratio for the difference between conditions is `r printnum(exp(E1_s@model$beta))`. Participants were `r round(exp(E1_s@model$beta), 1)` times more likely to award a higher severity rating to data points presented at high positions than low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E1_s@model$beta)))`.
+The odds ratio for the difference between conditions is `r printnum(exp(E1_s.estimate))`, `r print_confint(exp(E1_s.CI))`. Participants were `r round(exp(E1_s.estimate), 1)` times more likely to award a higher severity rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E1_s.estimate)))`. 
 
 This model employed random intercepts for each scenario, plus random intercepts and slopes for each participant. The slopes modeled, for each participant, the average difference between responses to data presented at different positions (henceforth referred to as 'by-position slopes').
 
@@ -759,7 +764,7 @@ summary_extract(E1_cl, "condition1")
 summary_extract(E1_sl, "condition1")
 ```
 
-We also generated two additional models, to test whether or not the above results could be explained by differences in graph literacy. These models were identical to the above models except for the inclusion of participants' graph literacy scores as an additional fixed effect. Adjusting for participants' graph literacy scores did not eliminate the effects of data points' positions on ratings of the magnitude of data points themselves (z = `r printnum(abs(E1_cl.statistic))`, p `r printp(E1_cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_cl$beta))`) or severity of consequences (z = `r printnum(abs(E1_sl.statistic))`, p `r printp(E1_sl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_cl$beta))`).
+We also generated two additional models, to test whether or not the above results could be explained by differences in graph literacy. These models were identical to the above models except for the inclusion of participants' graph literacy scores as an additional fixed effect. Adjusting for participants' graph literacy scores did not eliminate the effects of data points' positions on ratings of the magnitude of data points themselves (z = `r printnum(abs(E1_cl.statistic))`, p `r printp(E1_cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_cl.estimate))`, `r print_confint(exp(E1_cl.CI))`) or severity of consequences (z = `r printnum(abs(E1_sl.statistic))`, p `r printp(E1_sl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_sl.estimate))`, `r print_confint(exp(E1_sl.CI))`).
 
 ## Discussion
 
@@ -1018,7 +1023,7 @@ add_header_above(kable(random_str(E2_c), "latex"), "E2_c")
 
 @fig-E2-c plots the distribution of participants' ratings of data points' magnitudes, for data points presented at high and low physical positions. A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect ($\chi^2$(`r in_paren(E2_c.df)`) = `r printnum(E2_c.LR)`, p `r printp(E2_c.p, add_equals = TRUE)`). Data points' magnitudes were rated as *smaller* when those data points were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E2_c.statistic))`, p `r printp(E2_c.p.value, add_equals = TRUE)`). 
 
-The odds ratio for the difference between conditions is `r printnum(exp(E2_c@model$beta))`. Participants were `r round(exp(E2_c@model$beta), 1)` times more likely to award a higher magnitude rating to data points presented at high positions than low positions. This is equivalent to a Cohen's d value of `r oddsratio_to_d(exp(E2_c@model$beta))`. 
+The odds ratio for the difference between conditions is `r printnum(1/exp(E2_c.estimate))`, `r print_confint(1/exp(E2_c.CI))`. Participants were `r round(1/exp(E2_c.estimate), 1)` times more likely to award a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(1/exp(E2_c.estimate)))`. 
 
 This model employed random intercepts for each scenario. Estimated marginal means are plotted in @fig-E2-c-emm.
 
@@ -1095,7 +1100,7 @@ add_header_above(kable(random_str(E2_s), "latex"), "E2_s")
 
 For ratings of the severity of consequences, a likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include condition as a fixed effect: ($\chi^2$(`r in_paren(E2_s.df)`) = `r printnum(E2_s.LR)`, p `r printp(E2_s.p, add_equals = TRUE)`). The severity of consequences was rated as greater when data points representing the chance of an event occurring were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E2_s.statistic))`, p `r printp(E2_s.p.value, add_equals = TRUE)`). 
 
-The odds ratio for the difference between conditions is `r printnum(exp(E2_s@model$beta))`. Participants were `r round(exp(E2_s@model$beta), 1)` times more likely to award a higher severity rating to data points presented at high positions than low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E2_s@model$beta)))`.
+The odds ratio for the difference between conditions is `r printnum(1/exp(E2_s.estimate))`, `r print_confint(1/exp(E2_s.CI))`. Participants were `r round(1/exp(E2_s.estimate), 1)` times more likely to award a higher severity rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(1/exp(E2_s.estimate)))`. 
 
 This model employed random intercepts for each scenario, plus random intercepts and by-position slopes for each participant.
 
@@ -1125,7 +1130,7 @@ summary_extract(E2_cl, "condition1")
 summary_extract(E2_sl, "condition1")
 ```
 
-We also generated two additional models, to test whether or not the above results could be explained by differences in graph literacy. These models were identical to the above models except for the inclusion of participants' graph literacy scores as an additional fixed effect. Adjusting for participants' graph literacy scores did not change the pattern of results regarding ratings of the magnitude of data points themselves (z = `r printnum(abs(E2_cl.statistic))`, p `r printp(E2_cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_cl$beta))`) or ratings of the severity of consequences (z = `r printnum(abs(E2_sl.statistic))`, p `r printp(E2_sl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_cl$beta))`).
+We also generated two additional models, to test whether or not the above results could be explained by differences in graph literacy. These models were identical to the above models except for the inclusion of participants' graph literacy scores as an additional fixed effect. Adjusting for participants' graph literacy scores did not change the pattern of results regarding ratings of the magnitude of data points themselves (z = `r printnum(abs(E2_cl.statistic))`, p `r printp(E2_cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_cl.estimate))`, `r print_confint(1/exp(E2_cl.CI))`) or severity of consequences (z = `r printnum(abs(E2_sl.statistic))`, p `r printp(E2_sl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_sl.estimate))`, `r print_confint(1/exp(E2_sl.CI))`).
 
 ### Interaction Analysis
 
