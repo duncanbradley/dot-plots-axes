@@ -56,16 +56,12 @@ author:
     orcid: 0000-0002-9795-4104 
       
 abstract: |
-  When visualizing data, chart designers have the freedom to choose the upper and lower limits of their numerical axes. Axis limits determine the physical positions of plotted values, and can also provide visual context, supporting comprehension. Across two experiments (total N=300), we demonstrate that axis limits affect viewers' interpretations of plotted values' magnitudes {in charts presenting data on the chance of negative events occuring}. Participants did not simply associate values presented at higher vertical positions with greater magnitudes {probabilities}. Instead, they assessed the magnitude of data points by considering them in the numerical context supplied by axis limits. Data points were considered larger when they were closer to the end of the axis associated with greater values, even when they were presented at the *bottom* of a chart. [Chart designers must consider the role of their axis limits in viewers' interpretations of the magnitudes of plotted data points. We recommend displaying the range of relevant values in order to communicate the specific context for each dataset.]
+  When visualizing data, chart designers have the freedom to choose the upper and lower limits of their numerical axes. Axis limits determine the physical positions of plotted values, and can also provide visual context, supporting comprehension. In two experiments (total N=300), we demonstrate that axis limits affect viewers' interpretations of plotted values' magnitudes {in charts presenting data on the chance of negative events occuring}. Participants did not simply associate values presented at higher vertical positions with greater magnitudes {probabilities}. Instead, they assessed the magnitude of data points by considering them in the numerical context supplied by axis limits. Data points were considered larger when they were closer to the end of the axis associated with greater values, even when they were presented at the *bottom* of a chart. [Chart designers must consider the role of their axis limits in viewers' interpretations of the magnitudes of plotted data points. We recommend displaying the range of relevant values in order to communicate the specific context for each dataset.]
 keywords: "magnitude, axis range, dot plots, bias, framing effect, context, position"
 bibliography: bibliography.bib
 link_citations: true
 
-teaser:
-  image: images/CypressView
-  caption: | 
-  
-    .
+teaser: false
 
 ieee-vgtc-metadata:
   online-id: "0"
@@ -77,7 +73,7 @@ ieee-vgtc-metadata:
   # * system
   # * theory/model
   paper-type: please specify
-  short-author-title: "Bradley \\MakeLowercase{\\textit{et al.}}: short title"
+  short-author-title: "Bradley \\MakeLowercase{\\textit{et al.}}: Magnitude Judgements"
   keywords: ""
 ---
 
@@ -362,10 +358,11 @@ It is unclear exactly how a viewer's inferences about magnitude might be influen
 #| label: fig-senators-chart
 #| cache: false
 #| include: true
-#| out.width: "300px"
-#| out.height: "210px"
-#| fig.asp: 0.7
-#| fig-cap: A reproduction of a data visualisation from the New York Times. The y-axis limit is the largest possible value, rather than the largest observed value. The present study asks whether magnitude appears small because the plotted values occupy a low position, or because the plotted values are presented in the context of much larger values.
+#| out-width: "300px"
+#| out-height: "210px"
+#| fig-asp: 0.7
+#| fig-cap: A reproduction of a bar chart from the New York Times. The y-axis limit is defined by the largest possible value, rather than the largest observed value, thus the magnitude of plotted values appears particularly small.
+#| fig-alt: "A bar chart with the title 'Number of Black members of the U.S. Senate'. The y-axis ranges from 0 to 100, and the x-axis ranges from 1789 to 2022. Bars representing Black senators are mostly absent, with small bars representing a single Black senator appearing sporadicly in the late 1800s, late 1900s and early 2000s, before increasing around 2013, yet still occupying only 4% of the total at their peak. Source: Office of the Historian, History, Art & Archives, U.S. House of Representatives."
 
 read_csv("images/senators.csv") %>%
   ggplot(aes(x = year)) +  
@@ -437,7 +434,7 @@ One account suggests that perceptions of probability and outcome magnitude are r
 
 ## Data Visualization Literacy
 
-When faced with charts that violate graphical conventions by using atypical scales, individuals with low literacy are more likely to draw on data points' physical positions when making inferences about their magnitudes [@okan2012; @okan2016]. We administered Garcia-Retamero et al.'s [-@garcia-retamero2016] subjective graph literacy measure to determine whether responses to our manipulation of axis limits were associated with data\]visualization literacy.
+When faced with charts that violate graphical conventions by using atypical scales, individuals with low literacy are more likely to draw on data points' physical positions when making inferences about their magnitudes [@okan2012; @okan2016]. We administered Garcia-Retamero et al.'s [-@garcia-retamero2016] subjective graph literacy measure to determine whether responses to our manipulation of axis limits were associated with data visualization literacy.
 
 # Experiments
 
@@ -468,7 +465,8 @@ For each dataset, we generated three values from a normal distribution. Populati
 #| out-width: "300px"
 #| out-height: "180px"
 #| fig-asp: 0.6
-#| fig.cap: "Example Charts. The 'high physical position' condition (left) presents data points near the top of the chart; the 'low physical position' condition (right) presents the same data points near the bottom of the chart."
+#| fig-cap: Example charts, taken from Experiment 1. The *high physical position* condition (left) presents data points near the top of the chart; the *low physical position* condition (right) presents the same data points near the bottom of the chart.
+#| fig-alt: Two dot plots, where plotted data points are repsented by small black circles. In the left dot plot, the y-axis ranges from 61.5% to 71.5%, thus the three data points, which are around the 70% point, appear near the top of the axis. In the right chart, the y-axis ranges from 68.5% to 78.5%, thus the same three data points appear near the bottom of the axis. Each y-axis is labelled 'Chance (%)', accompanied by an upwards arrow. 
 
 # combine the two images of the charts in the two separate conditions
 img1 <- image_read("images/E23_hi.png")
@@ -486,7 +484,7 @@ Filler trials (n = 15) and attention check trials (n = 5) presented data points 
 
 The experiment was programmed in PsychoPy (version 2021.1.4, @peirce2019 and hosted on pavlovia.org. Participants were instructed to complete the experiment on a desktop computer or laptop, not a tablet or mobile phone. Instructions explained that their task involved assessing the chance and severity of negative outcomes in various scenarios involving risks and noted that some scenarios might appear similar to other scenarios. Participants were asked to complete the task as quickly and accurately as possible. Two practice trials preceded the experiment proper.
 
-An example of a single trial is shown in @fig-example-trial. Participants provided two responses in each trial: a rating of the chance of the negative event occurring; and a rating of the severity of the consequences if that negative event occurred. Both 7-point Likert scales had two anchors at their extremes: *'Very unlikely'* and *'Very likely'*; for the 'Chance' scale and *'Very mild'* to *'Very severe'*. for the 'Severity' scale. All other points were unlabeled. Text specified that answers should be given in response to the plotted data (e.g., *"If you camp on one of these days..."*). The term 'chance' was used instead of 'probability' to avoid confusion with the standard 0-1 scale for probabilities, and to reflect casual usage.
+An example of a single trial is shown in @fig-example-trial. Participants provided two responses in each trial: a rating of the chance of the negative event occurring; and a rating of the severity of the consequences if that negative event occurred. Both 7-point Likert scales had two anchors at their extremes: *'Very unlikely'* and *'Very likely'*; for the 'Chance' scale and *'Very mild'* to *'Very severe'*. for the 'Severity' scale. All other points were unlabelled. Text specified that answers should be given in response to the plotted data (e.g., *"If you camp on one of these days..."*). The term 'chance' was used instead of 'probability' to avoid confusion with the standard 0-1 scale for probabilities, and to reflect casual usage.
 
 Participants could change their responses as many times as they wished before proceeding to the next trial, but could not return to previous trials. In attention check trials, participants were instructed not to attend to the chart, and instead to provide specified responses on the Likert scales.
 
@@ -496,16 +494,18 @@ Before exiting the experiment, participants were informed that all presented dat
 #| label: fig-example-trial
 #| cache: false
 #| include: true
-#| out.width: "320px"
-#| out.height: "200px"
-#| fig.asp: 0.625
-#| fig.cap: "Example Trial. Participants rated the chance and severity of negative outcomes in each trial."
+#| out-width: "320px"
+#| out-height: "200px"
+#| fig-asp: 0.625
+#| fig-cap: "An example trial, taken from Experiment 1. Participants provided two ratings in each trial: the chance of an event occuring (magnitude rating), and the severity of consequences."
+#| fig-alt: "A screenshot of an example trial. The title is 'Heavy Rainfall' and the introductory text reads 'You are going on a camping trip next week. The graph below shows the chance of heavy rainfall for three randomly selected days next week'. The graph shows three data points located at high physical positions on the axis. Alongside this, text reads 'If you camp on one of these days... What is the chance you experience heavy rainfall?; What is the severity of consequences if you experience heavy rainfall?'. Below the first question is a 7-point Likert scale with anchors 'Very unlikely' and 'Very likely' at the extremes, below the second question is a 7-point Likert scale with anchors 'Very mild' and 'Very severe'."
+
 include_graphics("images/example_trial.png")
 ```
 
 #### Design
 
-We employed a repeated-measures, within-participants design. In experimental trials, participants encountered each scenario twice: once with data presented at a high physical position and once with data presented at a low physical position.
+We employed a repeated-measures, within-participants design. Participants encountered scenarios from experimental trials twice: once with data presented at a high physical position and once with data presented at a low physical position.
 
 Materials were divided into two lists to minimize the likelihood of different versions of the same scenario appearing in close succession. One list contained half of the high-condition items and half of the low-condition items for the experimental scenarios. The other list contained the alternate versions of each of the experimental scenarios. Fillers and attention check questions were split between the two lists, and did not appear more than once. The order of the two lists was counterbalanced across participants. Within each list, scenarios were presented in a random order.
 
@@ -540,7 +540,7 @@ Data were returned by 160 participants. Ten participants' submissions were rejec
 
 Analyses were conducted using R (version `r paste0(R.version$major, ".", R.version$minor)`; [@rcoreteam2022])
 
-Likert scales express granularity at the level of ordinal data. They record whether one rating is higher or lower than than another, but not the magnitude of this difference. Therefore, Likert scales do not capture values from latent distributions (mental representations) in a linear manner. The distance between one pair of points and another pair may appear equal, but may represent different distances on the latent distribution. Therefore, it is inappropriate to analyse Likert scale data with metric models, such as linear regression [@liddell2018]. Throughout this paper, we construct cumulative link mixed-effects models, using the *ordinal* package (version 2019.12-10, [@christensen2019a]) to analyse Likert scale ratings. Odds ratio effect sizes were converted to Cohen' d values using the *effect size* package \[ref\].
+Likert scales express granularity at the level of ordinal data. They record whether one rating is higher or lower than than another, but not the magnitude of this difference. Therefore, Likert scales do not necessarily capture values from latent distributions (mental representations) in a linear manner. The distance between one pair of points and another pair may appear equal, but may represent different distances on the latent distribution. Therefore, it is inappropriate to analyse Likert scale data with metric models, such as linear regression [@liddell2018]. Throughout this paper, we construct cumulative link mixed-effects models, using the *ordinal* package (version 2019.12-10, [@christensen2019a]) to analyse Likert scale ratings. Odds ratio effect sizes were converted to Cohen' d values using the *effect size* package \[ref\].
 
 Selection of model random effects structures was automated using the *buildmer* package in R (version 2.3, [@voeten2022]). The maximal random effects structure included random intercepts for participants and scenarios, plus corresponding slopes for the position variable [@barr2013]. *buildmer* initially identified the most complex model which could successfully converge. It subsequently removed terms which did not contribute substantially to explaining variance in ratings.
 
@@ -595,8 +595,10 @@ likert_plot <- function(df) {
 #| include: true
 #| out-width: "340px"
 #| out-height: "119px"
-#| fig.asp: 0.35
-#| fig.cap: "Participants rated the chance of each negative event occurring on a 7-point Likert scale. The distribution of ratings, ranging from \"Very unlikely\" (far left, dark green) to \"Very likely\" (far right, red), is shown separately for charts where values were presented at a high physical position (top) and a low physical position (bottom). Note that data points at high physical positions elicited a larger proportion of ratings on the right-hand side (which represents greater magnitudes), compared to data points at low physical positions, which elicited a larger proportion of ratings on the left-hand side (representing smaller magnitudes)."
+#| fig-asp: 0.35
+#| fig-cap: The distribution of Likert scale ratings of data points' magnitudes. The width of each response option represents the proportion of ratings recorded for that option. Note that data points presented at high physical positions (top) elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the left-hand side (representing smaller magnitudes).
+#| fig-alt: "A horizontal stacked bar chart, showing the responses at each Likert scale category for data points presented at high and low physical positions. The title reads 'Experiment 1: Ratings of Data Points' Magnitudes'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. For the 'high' condition, there are a greater proportion of responses at the 'Very likely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale."
+
 # create Likert plot for E1 data - chance (magnitude) ratings
 L1 <- likert_plot(E1_tidy) +
   annotate("segment", x=400, y=3.2, xend=2700, yend=3.2,
@@ -745,11 +747,11 @@ One possible explanation for this finding is that participants made simple assoc
 
 An alternative explanation is that participants used the y-axis as a frame of reference for assessing the magnitude of plotted values. For example, when considering data points at the near the bottom of the axis, participants may have recognized the potential for values larger than those observed, consequently associating plotted values with smaller magnitudes.
 
-E1 does not provide a means of differentiating these competing explanations. Drawing inferences from data points' absolute positions would bias magnitude judgments in the same direction as drawing inferences from their relative positions. A high magnitude is implied by a data point's high physical position *and* its superior position in the context other of presented values. Therefore, an additional experiment is required in order to distinguish between the two competing explanations.
+E1 does not provide a means of differentiating these competing explanations. Drawing inferences from data points' absolute positions would bias magnitude judgements in the same direction as drawing inferences from their relative positions. A high magnitude is implied by a data point's high physical position *and* its superior position in the context other of presented values. Therefore, an additional experiment is required in order to distinguish between the two competing explanations.
 
-Inverting a vertical axis changes the relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. This is illustrated in @fig-rationale. Therefore, inferences invoking relative numerical position would elicit a bias magnitude judgments in the opposite direction compared to inferences invoking data points' physical positions.
+Inverting a vertical axis changes the relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. This is illustrated in @fig-rationale. Therefore, inferences invoking relative numerical position would elicit a bias magnitude judgements in the opposite direction compared to inferences invoking data points' physical positions.
 
-In E2, we manipulate data points' physical positions by changing axis limits (as in E1), but employ inverted axes. This allows us to identify the mechanism responsible for the previously observed bias in magnitude judgments. Use of absolute position would be indicated by higher magnitude ratings for data points at *high* physical positions (mirroring the finding for conventional charts). Alternatively, use of relative numerical position would be indicated by higher magnitude ratings for data points at *low* physical positions (the reverse of the finding for conventional charts).
+In E2, we manipulate data points' physical positions by changing axis limits (as in E1), but employ inverted axes. This allows us to identify the mechanism responsible for the previously observed bias in magnitude judgements. Use of absolute position would be indicated by higher magnitude ratings for data points at *high* physical positions (mirroring the finding for conventional charts). Alternatively, use of relative numerical position would be indicated by higher magnitude ratings for data points at *low* physical positions (the reverse of the finding for conventional charts).
 
 Previous research suggests that charts with inverted axes can be prone to misinterpretation when viewers are not informed about the inversion [@pandey2015; @woodin2022]. Therefore, we provided explicit instruction to ensure participants were aware that inverted charts were presented.
 
@@ -760,7 +762,9 @@ Previous research suggests that charts with inverted axes can be prone to misint
 #| out-width: "340px"
 #| out-height: "238px"
 #| fig-asp: 0.7
-#| fig.cap: "Rationale for Experiment 2: Distinguishing the Roles of Absolute and Relative Position. In charts with conventional axis orientations (left column), there is congruity between data points’ absolute positions and their relative positions in the chart. In charts with inverted axis orientations (right column), there is incongruity between data points’ absolute positions and their relative positions in the chart. For example, at high absolute positions in conventional charts (top left), data points are relatively higher than implied alternatives. But at the same absolute positions, in inverted charts, the same values are relatively lower than alternatives (top right)."
+#| fig-cap: "Rationale for Experiment 2: distinguishing the roles of absolute and relative position. In charts with conventional axis orientations (left column), there is congruence between data points’ physical positions and their relative numerical positions in the chart. In charts with inverted axis orientations (right column), there is incongruence between data points’ physical positions and their relative numerical positions in the chart. This allows us to test whether physical positions or relative numerical positions influence magnitude judgements."
+#| fig-alt: "A 2x2 grid of dot plots. Where data points are plotted at a high physical position, using a conventional axis, the label reads 'Plotted values have HIGH relative position'. Where data points are plotted at a low physical position, using a conventional axis, the label reads 'Plotted values have LOW relative position'. Where data points are plotted at a high physical position, using an inverted axis, the label reads 'Plotted values have LOW relative position'. Where data points are plotted at a low physical position, using an inverted axis, the label reads 'Plotted values have HIGH relative position'."
+
 # visualizing the similarities/differences between absolute and relative position in conventional and inverted charts
 
 # create my theme
@@ -932,8 +936,10 @@ We used the same analysis methods as in E1.
 #| include: true
 #| out-width: "340px"
 #| out-height: "119px"
-#| fig.asp: 0.35
-#| fig.cap: "Participants rated the chance of each negative event occurring on a 7-point Likert scale. The distribution of ratings, ranging from \"Very unlikely\" (far left, dark green) to \"Very likely\" (far right, red), is shown separately for charts where values were presented at a high physical position (top) and a low physical position (bottom). Note that data points at high physical positions elicited a larger proportion of ratings on the left-hand side (which represents smaller magnitudes), compared to data points at low physical positions, which elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes)."
+#| fig-asp: 0.35
+#| fig-cap: The distribution of Likert scale ratings of data points' magnitudes. The width of each response option represents the proportion of ratings recorded for that option. Note that data points presented at high physical positions (top) elicited a larger proportion of ratings on the left-hand side (representing *smaller* magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the right-hand side (representing *larger* magnitudes).
+#| fig-alt: "A horizontal stacked bar chart, showing the responses at each Likert scale category for data points presented at high and low physical positions. The title reads 'Experiment 2 (Inverted Axes): Ratings of Data Points' Magnitudes'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. For the 'high' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very likely' end of the scale."
+
 # create likert plot for E2 data - chance (magnitude) ratings
 L2 <- likert_plot(E2_tidy) +
   annotate("segment", x=400, y=3.2, xend=2700, yend=3.2,
