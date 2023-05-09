@@ -385,7 +385,6 @@ Further evidence of truncation effects, provided by @yang_truncating_2021 improv
 
 ```{r}
 #| label: fig-senators-chart
-
 #| include: true
 #| out-width: "300px"
 #| out-height: "210px"
@@ -471,7 +470,6 @@ For each dataset, we generated three values from a normal distribution. Populati
 
 ```{r}
 #| label: fig-example-charts
-
 #| include: true
 #| out-width: "300px"
 #| out-height: "180px"
@@ -503,7 +501,6 @@ Before exiting the experiment, participants were informed that all presented dat
 
 ```{r}
 #| label: fig-example-trial
-
 #| include: true
 #| out-width: "320px"
 #| out-height: "200px"
@@ -602,7 +599,6 @@ likert_plot <- function(df) {
 
 ```{r}
 #| label: fig-E1-c
-
 #| include: true
 #| out-width: "340px"
 #| out-height: "119px"
@@ -668,7 +664,6 @@ summary_extract(E1_c, "condition1")
 
 ```{r}
 #| label: E1-c-str
-
 #| include: false
 # print table showing model random effects structure (not used in final document)
 add_header_above(kable(random_str(E1_c), "latex"), "E1_c")
@@ -718,7 +713,6 @@ summary_extract(E1_s, "condition1")
 
 ```{r}
 #| label: E1-s-str
-
 #| include: false
 # print table showing model random effects structure (not used in final document)
 add_header_above(kable(random_str(E1_s), "latex"), "E1_s")
@@ -788,7 +782,6 @@ Previous research suggests that charts with inverted axes can be prone to misint
 
 ```{r}
 #| label: fig-rationale
-
 #| include: true
 #| out-width: "340px"
 #| out-height: "238px"
@@ -963,7 +956,6 @@ We used the same analysis methods as in E1.
 
 ```{r}
 #| label: fig-E2-c
-
 #| include: true
 #| out-width: "340px"
 #| out-height: "119px"
@@ -1028,7 +1020,6 @@ summary_extract(E2_c, "condition1")
 
 ```{r}
 #| label: E2-c-str
-
 #| include: false
 # print table showing model random effects structure (not used in final document)
 add_header_above(kable(random_str(E2_c), "latex"), "E2_c")
@@ -1078,7 +1069,6 @@ summary_extract(E2_s, "condition1")
 
 ```{r}
 #| label: E2-s-str
-
 #| include: false
 # print table showing model random effects structure (not used in final document)
 add_header_above(kable(random_str(E2_s), "latex"), "E2_s")
