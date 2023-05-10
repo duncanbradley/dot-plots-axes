@@ -5,7 +5,7 @@
 
 ## Instructions for Using Docker To Generate the Manuscript Within a Fully-Reproducible Environment
 
-We provide resources for re-creating the computational environment (R version, package versions) used for all data wrangling, data visualization, statistical modelling, and reporting. This will generate a fully interactive RStudio session, which will be running from the container.
+We provide resources for re-creating the computational environment (R version, package versions) used for all data wrangling, data visualization, statistical modelling, and reporting. This will generate a fully interactive RStudio session, which will be running from a Docker container.
 
 1. Download [Docker Desktop](https://www.docker.com) and launch it
 2. Clone this repository to your local machine
