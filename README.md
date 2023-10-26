@@ -11,7 +11,7 @@ We provide resources for re-creating the computational environment (R version, p
 2. Clone this repository to your local machine
 3. Use the command line to navigate to the repository
 4. Type `docker build -t dot-plots-axes .` (where `dot-plots-axes` is the repository name). This builds the Docker image.
-5. Type `docker run --rm -p 8787:8787 -e PASSWORD=password dot-plots-axes`. This launches the Docker container.
+5. Type `docker run --rm -p 8787:8787 -e PASSWORD=password dot-plots-axes` to launch the Docker container.
 6. In your browser's address bar, type `localhost:8787`
 7. Enter `rstudio` as the username and `password` as the password. 
 8. Open `dot-plots-axes.qmd` and press Render to generate `dot-plots-axes.pdf`
