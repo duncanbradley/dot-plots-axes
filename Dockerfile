@@ -3,9 +3,9 @@
 FROM rocker/verse:4.2.1
 
 # Add files to container
-ADD dot-plots-axes.qmd /home/rstudio/
-ADD _quarto.yml /home/rstudio/
-ADD bibliography.bib /home/rstudio/
+ADD dot-plots-axes.qmd /home/rstudio
+ADD _quarto.yml /home/rstudio
+ADD bibliography.bib /home/rstudio
 
 # Add folders and their contents to container
 ADD _extensions/ /home/rstudio/_extensions/
