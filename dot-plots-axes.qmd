@@ -106,7 +106,7 @@ library(effectsize)
 library(qwraps2)
 
 set.seed(45789) # seed for random number generation
-tlmgr_install('collection-fontsrecommended') # additional font collection required for Docker
+#tlmgr_install('collection-fontsrecommended') # additional font collection required for Docker
 ```
 
 ```{r}
@@ -579,7 +579,7 @@ likert_plot <- function(df) {
                       direction = -1) +
     labs(x = NULL,
          y = NULL) +
-    scale_y_discrete(labels=c("Low", "High"),
+    scale_y_discrete(labels=c("Low Physical Position", "High Physical Position"),
                      limits = c("lo", "hi"))  +
     scale_x_continuous(labels=c("\"Very\nunlikely\"",
                                 "\"Very\nlikely\""), 
@@ -626,7 +626,7 @@ L1 <- L1 + geom_text(
   data=E1_prop,
   aes(x=freq, label=(perc), group=condition),
   position = position_stack(reverse = TRUE, vjust = 0.5),
-  color="black", size=3.5
+  color="black", size=2.8
 )
 
 L1
@@ -982,11 +982,55 @@ L2 <- L2 + geom_text(
   data=E2_prop,
   aes(x=freq, label=(perc), group=condition),
   position = position_stack(reverse = TRUE, vjust = 0.5),
-  color="black", size=3.5
+  color="black", size=2.8
 )
 
 L2
 ```
+
+
+```{r}
+#| label: fig-combined
+#| fig-cap: example
+#| include: true
+combined_df <- rbind(E1_tidy %>% 
+                       select(condition,
+                              chance_slider.response) %>% 
+                       cbind(experiment = "E1"),
+                     E2_tidy %>% 
+                       select(condition,
+                              chance_slider.response) %>%
+                       cbind(experiment = "E2"))
+
+ori_labs <- c("Conventional Axis Orientation", 
+                 "Inverted Axis Orientation")
+names(ori_labs) <- c("E1", "E2")
+
+# create likert plot for E2 data - chance (magnitude) ratings
+combined_plot <- likert_plot(combined_df) + facet_wrap(~ experiment, ncol = 1, labeller = labeller(experiment = ori_labs)) +
+  geom_segment(x=100, y=3.8, xend=650, yend=3.8,
+               arrow=arrow(ends = "both", type = "closed", length = unit(7, "pt")), data = combined_df %>% slice_head(n = 1)) +
+  labs(title = "Ratings of Data Points' Magnitudes\n
+       Experiments 1 and 2")
+
+combined_prop <- combined_df %>%
+  group_by(condition, experiment, chance_slider.response) %>%
+  summarize(freq = n(),
+            raw = round(n()/720*100, 0),
+            perc = paste0(round(n()/720*100, 0), "%")) %>% ungroup() %>%
+  filter(raw > 3)
+
+combined_plot <- combined_plot + geom_text(
+  data=combined_prop,
+  aes(x=freq, label=(perc)),
+  position = position_stack(reverse = TRUE, vjust = 0.6),
+  color="black", size=2.8
+)
+
+combined_plot
+```
+
+here @fig-combined test
 
 ```{r}
 #| label: E2-c
