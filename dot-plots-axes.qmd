@@ -371,6 +371,8 @@ It is unclear exactly how a viewer's inferences about magnitude might be influen
 
 In two experiments, we manipulated the axis limits surrounding plotted data. The same data points either appeared close to the upper end of an axis range, or close to the lower end. Likert scale ratings of values' magnitudes were higher when data points were positioned close to the end of the axis which was associated with higher numbers. By employing charts with conventional and inverted y-axis orientations to distinguish between possible explanations, we reveal that magnitude judgements are influenced by data points' relative positions within the axis limits.
 
+Data, analysis code, experimental scripts, materials, and interactive versions of the experiments are available at https://osf.io/3epm2/. We also provide all necessary resources for running a Docker container, within which the computational environment used for analysis is recreated, meaning a fully-reproducible version of this paper can be generated.
+
 # Related Work
 
 ## Effects of Axis Limits on Comparison Judgements
@@ -454,7 +456,7 @@ Experiment 1 sought to establish whether y-axis limits affected magnitude judgem
 
 Experiment 2 used the same y-axis manipulation as Experiment 1, but in charts with inverted y-axis orientations, where data points at lower physical positions represented greater values. This allowed us to investigate whether magnitude judgements were driven by data points' absolute positions, or their relative positions within the context of the axis limits. Our use of inverted charts should not be considered an endorsement (see issues above). They serve to distinguish between two possible explanations, since they reverse the typical associations between physical position and magnitude.
 
-Ethical approval was granted by The University of Manchester's Division of Neuroscience & Experimental Psychology Ethics Committee (Experiment 1: Ref 2021-11115-18258; Experiment 2: Ref. 2021-11115-20745). Data, analysis code, experimental scripts, materials and a link to run the experiments are available at https://osf.io/3epm2/. We also provide all necessary resources for running a Docker container, within which the computational environment used for analysis is recreated, meaning a fully-reproducible version of this paper can be generated.
+Ethical approval was granted by The University of Manchester's Division of Neuroscience & Experimental Psychology Ethics Committee (Experiment 1: Ref 2021-11115-18258; Experiment 2: Ref. 2021-11115-20745). Data, analysis code, experimental scripts, materials, and interactive versions of the experiments are available at https://osf.io/3epm2/.
 
 ## Experiment 1
 
@@ -471,8 +473,8 @@ For each dataset, we generated three values from a normal distribution. Populati
 ```{r}
 #| label: fig-example-charts
 #| include: true
-#| out-width: "300px"
-#| out-height: "180px"
+#| out-width: "600px"
+#| out-height: "360px"
 #| fig-asp: 0.6
 #| fig-cap: Example charts, taken from Experiment 1. The *high physical position* condition (left) presents data points near the top of the chart; the *low physical position* condition (right) presents the same data points near the bottom of the chart.
 #| fig-alt: Two dot plots, where plotted data points are repsented by small black circles. In the left dot plot, the y-axis ranges from 61.5% to 71.5%, thus the three data points, which are around the 70% point, appear near the top of the axis. In the right chart, the y-axis ranges from 68.5% to 78.5%, thus the same three data points appear near the bottom of the axis. Each y-axis is labelled 'Chance (%)', accompanied by an upwards arrow. 
