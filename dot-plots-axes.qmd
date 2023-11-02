@@ -373,6 +373,16 @@ In two experiments, we manipulated the axis limits surrounding plotted data. The
 
 Data, analysis code, experimental scripts, materials, and interactive versions of the experiments are available at https://osf.io/3epm2/. We also provide all necessary resources for running a Docker container, within which the computational environment used for analysis is recreated, meaning a fully-reproducible version of this paper can be generated.
 
+## Contributions
+
+Demonstrate effect of position/axis limits, beyond prior work
+
+Explore the cognitive processing by testing the mechanism
+
+Highlight an additional consideration for designers: conveying magnitude
+
+
+
 # Related Work
 
 ## Effects of Axis Limits on Comparison Judgements
@@ -442,7 +452,7 @@ In the present study, participants viewed charts showing fictitious data on the 
 
 Presenting data about events with negative consequences warranted consideration of the cognitive processing of this information. These events are composed of two core components: 1) chance of occurrence and 2) outcome magnitude (severity). Individuals' assessments of chance and severity are not necessarily independent. Events are perceived as more likely when they are described as having more severe consequences [@harris_communicating_2011; @harris_estimating_2009]. In a similar manner, events are associated with more substantial consequences when they are described as more likely [@kupor_probable_2020].
 
-One account suggests that perceptions of probability and outcome magnitude are related because they are both assumed to reflect the potency of the event's cause (probability-outcome correspondence principle; [@keren_probabilityoutcome_2001]). According to this account, probabilities can occasionally provide meaningful indications of outcome magnitude (e.g., rainfall), but it is inappropriate to apply this perspective to all situations (e.g., volcanic eruptions). Therefore, even though charts in the present study only display the *chance* of events occurring, assessments of the *severity* of events' consequences may also differ between conditions. Collecting separate judgements for chance and severity of consequences provides a clearer picture of how the manipulation affects distinct aspects of participants' representations. Our use of Likert scales (with discrete options) rather than visual analogue scales (with continuous options; @sung_visual_2018) prevents participants from simply mapping probability percentages directly onto a linear scale.
+One account suggests that perceptions of probability and outcome magnitude are related because they are both assumed to reflect the potency of the event's cause (probability-outcome correspondence principle; [@keren_probabilityoutcome_2001]). According to this account, probabilities can occasionally provide meaningful indications of outcome magnitude (e.g., rainfall), but it is inappropriate to apply this perspective to all situations (e.g., volcanic eruptions). Therefore, even though charts in the present study only display the *chance* of events occurring, assessments of the *severity* of events' consequences may also differ between conditions. Collecting separate judgements for chance and severity of consequences provides a clearer picture of how the manipulation affects distinct aspects of participants' representations. Our use of Likert scales forces participants to choose from a limited number of options, thus helping capture their *gist*-level interpretations of information, rather than *verbatim* representations [@reyna_theory_2008].
 
 ## Data Visualisation Literacy
 
@@ -489,7 +499,7 @@ Datasets were displayed using dot plots. In experimental trials (n = 40), upper 
 
 The y-axis range in each chart was 10 percentage points. Horizontal gridlines appeared at one-unit increments. The horizontal gridlines 1.5 units from the extremes were labelled with numerical values.
 
-Filler trials (n = 15) and attention check trials (n = 5) presented data points in the middle third of the chart. Filler trials employed this additional variation to prevent participants from identifying the purpose of the study.
+Filler trials (n = 15) and attention check trials (n = 5, two questions per trial) presented data points in the middle third of the chart. Filler trials employed this additional variation to prevent participants from identifying the purpose of the study.
 
 #### Procedure
 
@@ -497,7 +507,7 @@ The experiment was programmed in PsychoPy (version 2021.1.4, [@peirce_psychopy2_
 
 An example of a single trial is shown in @fig-example-trial. Participants provided two responses in each trial: a rating of the chance of the negative event occurring; and a rating of the severity of the consequences if that negative event occurred. Both 7-point Likert scales had two anchors at their extremes: *'Very unlikely'* and *'Very likely'*; for the 'Chance' scale and *'Very mild'* to *'Very severe'*. for the 'Severity' scale. All other points were unlabelled. Text specified that answers should be given in response to the plotted data (e.g., *"If you camp on one of these days..."*). The term 'chance' was used instead of 'probability' to avoid confusion with the standard 0-1 scale for probabilities, and to reflect casual usage.
 
-Participants could change their responses as many times as they wished before proceeding to the next trial, but could not return to previous trials. In attention check trials, participants were instructed not to attend to the chart, and instead to provide specified responses on the Likert scales.
+Participants could change their responses as many times as they wished before proceeding to the next trial, but could not return to previous trials. In attention check trials, participants were instructed not to attend to the chart, and instead to provide specified responses on each of the two Likert scales.
 
 Before exiting the experiment, participants were informed that all presented data were fictitious and guidance was provided in case of distress.
 
@@ -540,7 +550,7 @@ literacy_E1 <- distinct(E1_tidy, participant, .keep_all = TRUE) %>% summarise(me
 time_E1 <- distinct(E1_tidy, participant, .keep_all = TRUE) %>% filter(time_taken < 300 & !is.na(time_taken)) %>% summarise(mean = mean(time_taken), sd = sd(time_taken))
 ```
 
-Data were returned by 160 participants. Ten participants' submissions were rejected because they answered more than two of 10 attention check questions incorrectly. This left a total of 150 participants whose submissions were used for analysis (`r printnum(gender_E1$M)`% male, `r printnum(gender_E1$F)`% female, `r printnum(gender_E1$NB)`% non-binary). Mean age was `r printnum(age_E1$mean)` (*SD* = `r printnum(age_E1$sd)`)[^1]. The mean data visualisation literacy score was `r printnum(literacy_E1$mean)` (*SD* = `r printnum(literacy_E1$sd)`), out of a maximum of 30. Participants whose submissions were approved were paid £3.55. Average completion time was `r printnum(time_E1$mean, digits = 0)` minutes [^2].
+We planned to recruit 150 participants. Ten additional participants were excluded for answering more than two of 10 attention check questions incorrectly. The remaining 150 submissions were used in the analysis: (`r printnum(gender_E1$M)`% male, `r printnum(gender_E1$F)`% female, `r printnum(gender_E1$NB)`% non-binary). Mean age was `r printnum(age_E1$mean)` (*SD* = `r printnum(age_E1$sd)`)[^1]. The mean data visualisation literacy score was `r printnum(literacy_E1$mean)` (*SD* = `r printnum(literacy_E1$sd)`), out of a maximum of 30. Participants whose submissions were approved were paid £3.55. Average completion time was `r printnum(time_E1$mean, digits = 0)` minutes [^2].
 
 [^1]: Age data were unavailable for one participant.
 
@@ -776,9 +786,7 @@ An alternative explanation is that participants used the y-axis as a frame of re
 
 E1 does not provide a means of differentiating these competing explanations. Drawing inferences from data points' absolute positions would bias magnitude judgements in the same direction as drawing inferences from their relative positions. A high magnitude is implied by a data point's high physical position *and* its superior position in the context other of presented values. Therefore, an additional experiment is required in order to distinguish between the two competing explanations.
 
-Plotting numerical values along the x-axis would not assist in answering this question, since values that are large in the context of the x-axis limits would be positioned on the right-hand side, which is also typically associated with larger magnitudes [@woodin_placing_2018]. However, inverting a vertical axis changes the typical relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. Therefore, inferences invoking relative numerical position would bias magnitude judgements in the opposite direction compared to inferences invoking data points' physical positions. This is illustrated in @fig-rationale.
-
-In Experiment 2 (E2), we manipulate data points' physical positions by changing axis limits (as in E1), but employ inverted y-axes. This allows us to identify the mechanism responsible for the previously observed bias in magnitude judgements. Use of absolute position would be indicated by higher magnitude ratings for data points at *high* physical positions (mirroring the finding for conventional charts). Alternatively, use of relative numerical position would be indicated by higher magnitude ratings for data points at *low* physical positions (the reverse of the finding for conventional charts).
+Plotting numerical values along the x-axis would not assist in answering this question, since values that are large in the context of the x-axis limits would be positioned on the right-hand side, which is also typically associated with larger magnitudes [@woodin_placing_2018]. However, inverting a vertical axis changes the typical relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. Therefore, inferences invoking relative numerical position would bias magnitude judgements in the opposite direction compared to inferences invoking data points’ physical positions. This is illustrated in @fig-rationale. In Experiment 2 (E2), we manipulate data points’ physical positions by changing axis limits (as in E1), but employ inverted y-axes. 
 
 Previous research suggests that charts with inverted axes can be prone to misinterpretation when viewers are not informed about the inversion [@pandey_how_2015; @woodin_conceptual_2022]. Therefore, we provided explicit instruction to ensure participants were aware that inverted charts were presented.
 
@@ -944,7 +952,7 @@ literacy_E2 <- distinct(E2_tidy, participant, .keep_all = TRUE) %>% summarise(me
 time_E2 <- distinct(E2_tidy, participant, .keep_all = TRUE) %>% summarise(mean = mean(time_taken), sd = sd(time_taken))
 ```
 
-Data were returned by 161 participants. Ten participants' submissions were rejected because they answered more than two of 10 attention check questions incorrectly. One additional participant was excluded from the final dataset because they exceeded the maximum completion time (87 minutes). This left a total of 150 participants whose submissions were used for analysis: (`r printnum(gender_E2$M)`% male, `r printnum(gender_E2$F)`% female). Mean age was `r printnum(age_E2$mean)` (*SD* = `r printnum(age_E2$sd)`)[^3]. `r printnum(edu_E2$n, digits = 0)`% had completed at least secondary education. The mean data visualisation literacy score was `r printnum(literacy_E2$mean)` (*SD* = `r printnum(literacy_E2$sd)`). Participants whose submissions were approved were paid £3.45, and average completion time was `r printnum(time_E2$mean, digits = 0)` minutes.
+We planned to recruit 150 participants. Eleven additional participants were excluded because they answered more than two of 10 attention check questions incorrectly (10 participants) or because they exceeded the maximum completion time (87 minutes; one participant). The remaining 150 submissions were used in the analysis: (`r printnum(gender_E2$M)`% male, `r printnum(gender_E2$F)`% female). Mean age was `r printnum(age_E2$mean)` (*SD* = `r printnum(age_E2$sd)`)[^3]. `r printnum(edu_E2$n, digits = 0)`% had completed at least secondary education. The mean data visualisation literacy score was `r printnum(literacy_E2$mean)` (*SD* = `r printnum(literacy_E2$sd)`). Participants whose submissions were approved were paid £3.45, and average completion time was `r printnum(time_E2$mean, digits = 0)` minutes.
 
 [^3]: Age data were unavailable for two participants.
 
@@ -991,8 +999,13 @@ L2
 
 ```{r}
 #| label: fig-combined
-#| fig-cap: example
+#| fig-cap: example example example example example example example example example example example example example example example example example example example example example
 #| include: true
+#| fig.env: figure*
+#| fig-pos: 't'
+# for top of two column output:
+# https://quarto.org/docs/authoring/figures.html#figure-position
+# https://github.com/quarto-dev/quarto-cli/discussions/4399#discussioncomment-5069622
 combined_df <- rbind(E1_tidy %>% 
                        select(condition,
                               chance_slider.response) %>% 
@@ -1190,7 +1203,7 @@ Adjusting for data visualisation literacy did not eliminate the influence of axi
 
 We employed inverted y-axes solely for the purpose of distinguishing competing explanations; their use should not be considered an endorsement. To avoid misinterpretations, participants were given instruction on how to read inverted charts. With this explicit instruction, our data provide evidence *contrary* to the typical finding of misinterpretation resulting from associating higher positions with higher values [@woodin_conceptual_2022; @pandey_how_2015]. However, this instruction may have suppressed a spontaneous interpretation of magnitude, based on physical position, in favour of a learned interpretation. Our investigation therefore only explores the cognitive processing associated with assessing magnitude in charts which viewers know how to read.
 
-This study was designed to explore one factor involved in assessing magnitude. The influence of axis limits on interpretations was relatively small, raising the question of how much this factor influences real-world decision-making and behaviour. A forced choice measure, or response scale with concrete values, would be suitable for capturing these outcomes in future work. Addressing this question will help to quantify how much a designer's choice of axis limits affects a viewer's choices and actions. An appreciable effect would have implications for visualisation design, suggesting use of axis limits which convey magnitude appropriately to avoid misleading users. Suitable axis limits cannot be objectively determined, but must be informed by the designer, based their assessment of the data [@correll_truncating_2020]. The effects of axis range on discrimination ability would also warrant consideration, taking account of the intended application.
+This study was designed to explore one factor involved in assessing magnitude. The influence of axis limits on interpretations was relatively small, raising the question of how much this factor influences real-world decision-making and behaviour. A forced choice measure, or response scale with concrete values, would be suitable for capturing these outcomes in future work. Addressing this question will help to quantify how much a designer's choice of axis limits affects a viewer's choices and actions. An appreciable effect would have implications for visualisation design, suggesting use of axis limits which convey magnitude appropriately to avoid misleading users. Suitable axis limits cannot be objectively determined, but must be informed by the designer, based their assessment of the data [@correll_truncating_2020]. The effects of axis range on discrimination ability would also warrant consideration, taking account of the intended application. Pre-registration of experiments and analysis protocol would also increase the credibility of future work on this topic.
 
 # Conclusion
 
