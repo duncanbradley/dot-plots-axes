@@ -1180,11 +1180,11 @@ summary_extract(E2_c, "condition1")
 add_header_above(kable(random_str(E2_c), "latex"), "E2_c")
 ```
 
-@fig-E2-c plots the distribution of participants' ratings of data points' magnitudes, showing that values presented at *low* physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at *high* physical positions.
+@fig-E2-c plots the distribution of ratings of data points' magnitudes, showing that values presented at *low* physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at *high* physical positions.
 
-A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect ($\chi^2$(`r in_paren(E2_c.df)`) = `r printnum(E2_c.LR)`, p `r printp(E2_c.p, add_equals = TRUE)`). Data points' magnitudes were rated as larger when those data points were presented at *low* physical positions, compared to when the same data points were presented at high physical positions, in contrast to the findings in Experiment 1 (z = `r printnum(abs(E2_c.statistic))`, p `r printp(E2_c.p.value, add_equals = TRUE)`).
+A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect ($\chi^2$(`r in_paren(E2_c.df)`) = `r printnum(E2_c.LR)`, p `r printp(E2_c.p, add_equals = TRUE)`). Data points' magnitudes were rated as larger when those data points were presented at *low* physical positions, compared to when the same data points were presented at high physical positions, in contrast to the findings in Experiment 1 (z = `r printnum(abs(E2_c.c.statistic))`, p `r printp(E2_c.c.p.value, add_equals = TRUE)`).
 
-The odds ratio for the difference between conditions is `r printnum(1/exp(E2_c.estimate))` (`r print_confint(rev(1/exp(E2_c.CI)), conf.int = 0.95)`). Participants were `r 1/exp(E2_c.estimate)` times more likely to respond with a higher magnitude rating to data points presented at *low* positions than data points presented at high positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(1/exp(E2_c.estimate)))`.
+The odds ratio for the difference between conditions is `r printnum(1/exp(E2_c.c.estimate))`, `r print_confint(rev(1/exp(E2_c.c.CI)), conf.int = 0.95)`). Participants were `r printnum(1/exp(E2_c.c.estimate))` times more likely to respond with a higher magnitude rating to data points presented at *low* positions than data points presented at high positions. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(1/exp(E2_c.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_c.c.estimate))))` effect size.
 
 This model employed random intercepts for each scenario.
 
@@ -1229,11 +1229,9 @@ summary_extract(E2_s, "condition1")
 add_header_above(kable(random_str(E2_s), "latex"), "E2_s")
 ```
 
-For ratings of the severity of consequences, a likelihood ratio test reveals that a model including physical position as a fixed effect explained numerically more variability in ratings than a model which does not include condition as a fixed effect, although this failed to reach significance: ($\chi^2$(`r in_paren(E2_s.df)`) = `r printnum(E2_s.LR)`, p `r printp(E2_s.p, add_equals = TRUE)`). The severity of consequences was rated as numerically greater when data points representing the chance of an event occurring were presented at low physical positions, compared to when the same data points were presented at high physical positions, although this failed to reach significance (z = `r printnum(abs(E2_s.statistic))`, p `r printp(E2_s.p.value, add_equals = TRUE)`).
+For ratings of the severity of consequences, a likelihood ratio test reveals that a model including physical position as a fixed effect did not explain significantly more variability in ratings than a model without physical condition as a fixed effect: ($\chi^2$(`r in_paren(E2_s.df)`) = `r printnum(E2_s.LR)`, p `r printp(E2_s.p, add_equals = TRUE)`). The odds ratio for the difference between conditions is `r printnum(1/exp(E2_s.c.estimate))`, `r print_confint(rev(1/exp(E2_s.c.CI)), conf.int = 0.95)`). This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(1/exp(E2_s.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_s.c.estimate))))` effect size.
 
-The odds ratio for the difference between conditions is `r printnum(1/exp(E2_s.estimate))` (`r print_confint(rev(1/exp(E2_s.CI)), conf.int = 0.95)`). Participants were `r 1/exp(E2_s.estimate)` times more likely to respond with a higher severity rating to data points presented at low positions than data points presented at high positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(1/exp(E2_s.estimate)))`.
-
-This model employed random intercepts for each scenario, plus random intercepts and by-position slopes for each participant.
+This model employed random intercepts for each scenario, plus random intercepts for each participant with random slopes for position.
 
 ### Data Visualisation Literacy
 
