@@ -680,11 +680,11 @@ summary_extract(E1_c, "condition1")
 add_header_above(kable(random_str(E1_c), "latex"), "E1_c")
 ```
 
-@fig-E1-c plots the distribution of participants' ratings of data points' magnitudes, showing that values presented at high physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at low physical positions.
+@fig-E1-c plots the distribution of ratings of data points' magnitudes. Values presented at high physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at low physical positions.
 
-A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect ($\chi^2$(`r in_paren(E1_c.df)`) = `r printnum(E1_c.LR)`, p `r printp(E1_c.p, add_equals = TRUE)`). Data points' magnitudes were rated as greater when those data points were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_c.statistic))`, p `r printp(E1_c.p.value, add_equals = TRUE)`).
+A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect: $\chi^2$(`r in_paren(E1_c.df)`) = `r printnum(E1_c.LR)`, p `r printp(E1_c.p, add_equals = TRUE)`. Data points' magnitudes were rated as greater when those data points were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_c.c.statistic))`, p `r printp(E1_c.c.p.value, add_equals = TRUE)`).
 
-The odds ratio for the difference between conditions is `r printnum(exp(E1_c.estimate))` (`r print_confint(exp(E1_c.CI))`). Participants were `r exp(E1_c.estimate)` times more likely to respond with a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E1_c.estimate)))`.
+The odds ratio for the difference between conditions is `r printnum(exp(E1_c.c.estimate))`, `r print_confint(exp(E1_c.c.CI))`. Participants were `r printnum(exp(E1_c.c.estimate))` times more likely to respond with a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_c.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_c.c.estimate))))` effect size.
 
 This model included random intercepts for each participant and each scenario.
 
@@ -729,11 +729,11 @@ summary_extract(E1_s, "condition1")
 add_header_above(kable(random_str(E1_s), "latex"), "E1_s")
 ```
 
-For ratings of the severity of consequences, a likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include condition as a fixed effect: ($\chi^2$(`r in_paren(E1_s.df)`) = `r printnum(E1_s.LR)`, p `r printp(E1_s.p, add_equals = TRUE)`). The severity of consequences was rated as greater when data points representing the chance of an event occurring were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_s.statistic))`, p `r printp(E1_s.p.value, add_equals = TRUE)`).
+For ratings of the severity of consequences, a likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include condition as a fixed effect: $\chi^2$(`r in_paren(E1_s.df)`) = `r printnum(E1_s.LR)`, p `r printp(E1_s.p, add_equals = TRUE)`. The severity of consequences was rated as greater when data points representing the chance of an event occurring were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_s.c.statistic))`, p `r printp(E1_s.c.p.value, add_equals = TRUE)`).
 
-The odds ratio for the difference between conditions is `r printnum(exp(E1_s.estimate))`, `r print_confint(exp(E1_s.CI))`. Participants were `r exp(E1_s.estimate)` times more likely to respond with a higher severity rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(oddsratio_to_d(exp(E1_s.estimate)))`.
+The odds ratio for the difference between conditions is `r printnum(exp(E1_s.c.estimate))`, `r print_confint(exp(E1_s.c.CI))`. Participants were `r printnum(exp(E1_s.c.estimate))` times more likely to respond with a higher severity rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_s.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_s.c.estimate))))` effect size.
 
-This model employed random intercepts for each scenario, plus random intercepts and slopes for each participant. The slopes modelled, for each participant, the average difference between responses to data presented at different positions (henceforth referred to as *by-position slopes*).
+This model employed random intercepts for each scenario, plus random intercepts and slopes for each participant. The slopes modelled, for each participant, the average difference between responses to data presented at different positions.
 
 ### Data Visualisation Literacy
 
@@ -758,20 +758,118 @@ E1_sl <- clmm(add.terms(formula(E1_s), "literacy"),
 ```
 
 ```{r}
-#| label: E1-lit-summary
+#| label: E1-clint
+#| eval: !expr params$eval_models
+#| cache: !expr params$eval_models
 
-# summary output for E1 chance (magnitude) rating model with literacy
-summary_extract(E1_cl, "condition1")
+# 
+E1_clint <- buildclmm(chance_slider.response ~ condition*literacy + 
+                    (1 + condition | participant) +
+                    (1 + condition*literacy | item_no),
+                  buildmerControl=list(                         include='chance_slider.response ~ condition*literacy'), 
+                    data = E1_tidy)
 
-# summary output for E1 severity rating model with literacy
-summary_extract(E1_sl, "condition1")
+emtrends(E1_clint@model, pairwise ~ condition, var = "literacy")
+
+emmip(E1_clint@model, condition ~ literacy, cov.reduce = range)
 ```
 
-We also generated two additional models, to test whether or not the above results could be explained by differences in data visualisation literacy. These models were identical to the above models except for the inclusion of participants' subjective data visualisation literacy scores as an additional fixed effect. Adjusting for participants' data visualisation literacy scores did not eliminate the effects of data points' positions on ratings of the magnitude of data points themselves (z = `r printnum(abs(E1_cl.statistic))`, p `r printp(E1_cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_cl.estimate))`, `r print_confint(exp(E1_cl.CI))`) or severity of consequences (z = `r printnum(abs(E1_sl.statistic))`, p `r printp(E1_sl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_sl.estimate))`, `r print_confint(exp(E1_sl.CI))`).
+```{r}
+#| label: E1-slint
+#| eval: !expr params$eval_models
+#| cache: !expr params$eval_models
+
+# 
+E1_slint <- buildclmm(severity_slider.response ~ condition*literacy + 
+                    (1 + condition | participant) +
+                    (1 + condition*literacy | item_no),
+                 buildmerControl=list(                         include='severity_slider.response ~ condition*literacy'), 
+                     data = E1_tidy)
+
+emtrends(E1_slint@model, pairwise ~ condition, var = "literacy")
+
+emmip(E1_slint@model, condition ~ literacy, cov.reduce = range)
+```
+
+```{r}
+#| label: E1-lit-summary
+
+# summary output for E1 chance (magnitude) rating model with literacy covariate
+summary_extract(E1_cl, "condition1")
+
+# summary output for E1 severity rating model with literacy covariate
+summary_extract(E1_sl, "condition1")
+
+# summary output for E1 chance (magnitude) rating model with literacy interaction
+summary_extract(E1_clint, "condition1:literacy")
+
+# summary output for E1 severity rating model with literacy interation
+summary_extract(E1_slint, "condition1:literacy")
+
+emtrends(E1_clint@model, "condition", var = "literacy") %>% 
+  as_tibble() %>% 
+  group_split(condition) %>% map(~ {
+    vals <- as.list(.x)
+    names(vals) <- paste0("E1_clint", 
+                          "_", 
+                          .x$condition, 
+                          "_", 
+                          names(vals))
+    list2env(vals, envir = globalenv())
+})
+```
+
+```{r}
+#| label: fig-E1-clint
+#| include: true
+#| fig-scap: The interaction between data visualisation literacy and the physical position of data points, for magnitude ratings in Experiment 1.
+#| fig-cap: "The interaction between data visualisation literacy and the physical position of data points, for magnitude ratings in Experiment 1. On the y-axis, the grey horizontal lines depict the thresholds between the seven response categories for magnitude ratings, from 'Very unlikely' to 'Very likely'. The data displayed are based on the estimated marginal means from the interaction model. Note that this interaction is associated with a very small effect size."
+my_palette <- unname(palette.colors(palette = "Okabe-Ito")[2:3])
+
+Thresh = E1_clint@model$Theta
+Slopes = E1_clint@model$coefficients
+Literacy = E1_tidy$literacy
+
+emmip(E1_clint@model, condition ~ literacy, cov.reduce = range) +
+lims(y = c(min(Thresh)-0.7,
+             max(Thresh)+0.7)) +
+  geom_hline(yintercept = c(unname(Thresh)), colour = "lightgrey") +
+  theme_minimal(base_size = 10) +
+  theme(panel.grid.minor = element_blank(),
+                panel.grid.major = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  annotate("text",
+           y = c(min(Thresh)-0.7,
+                 max(Thresh)+0.7), 
+           x = max(Literacy)-(max(Literacy)-min(Literacy))/2, 
+           label = c("Very unlikely", "Very likely"),
+           size = 3,
+           colour = "darkgrey") +
+  labs(title = "Experiment 1:\nData Visualisation Literacy x Physical Position Interaction",
+       subtitle = "Estimated Marginal Means",
+    x = "Data Visualisation Literacy Score",
+       y = "Magnitude Rating",
+       colour = "Physical Position",
+    linewidth = NULL) +
+  scale_color_manual(limits = c('hi', 'lo'), 
+                       labels = c('High', 'Low'),
+                   values = my_palette) +
+  theme(axis.text.y = element_blank()) +
+  geom_line(linewidth = 1.5, linetype = "solid")
+```
+
+Adjusting for participants' data visualisation literacy scores did not eliminate the effect of the position of data points on ratings of magnitude (z = `r printnum(abs(E1_cl.c.statistic))`, p `r printp(E1_cl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_cl.c.estimate))`, `r print_confint(exp(E1_cl.c.CI))`) or the severity of consequences (z = `r printnum(abs(E1_sl.c.statistic))`, p `r printp(E1_sl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_sl.c.estimate))`, `r print_confint(exp(E1_sl.c.CI))`). These models were identical to the above models except for the inclusion of subjective data visualisation literacy scores as an additional fixed effect.
+
+However, further analysis found that, for magnitude ratings, there was an interaction between physical position and data visualisation literacy: z = `r printnum(abs(E1_clint.cl.statistic))`, p `r printp(E1_clint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_clint.cl.estimate))`, `r print_confint(exp(E1_clint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_clint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_clint.cl.estimate))))` effect size. The difference between magnitude ratings for data points presented at different positions diminished as data visualisation literacy increased. This is shown in @fig-E1-clint. This model employed random intercepts for scenarios with random slopes for literacy, plus random intercepts for participants. The model formula was as follows: `` `r paste(print_formula(E1_clint))` ``
+
+For ratings of the severity of consequences, there was no significant interaction between physical position and data visualisation literacy: z = `r printnum(abs(E1_slint.cl.statistic))`, p `r printp(E1_slint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_slint.cl.estimate))`, `r print_confint(exp(E1_slint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_slint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_slint.cl.estimate))))` effect size. This model employed random intercepts for participants with random slopes for position, plus random intercepts for scenarios with random slopes for literacy. The model formula was as follows: `` `r paste(print_formula(E1_slint))` ``
 
 ## Discussion
 
-This experiment demonstrates that axis limits, which determine the position of plotted values, influence inferences about data points' magnitudes. Participants rated *the same values* as greater when these values were plotted at high positions, compared to low positions. Although this difference appears subtle, it is associated with a medium effect size. Even though the charts only displayed data on the chance of negative outcomes occurring, ratings of severity of consequences were also greater when data points were presented at high positions. Accounting for differences in participants' data visualisation literacy did not alter the pattern of results.
+This experiment demonstrates that axis limits, which determine the position of plotted values, influence inferences about the magnitude of data points. Participants rated *the same values* as greater when these values were plotted at high positions, compared to low positions. Although this difference appears subtle, it is associated with a medium effect size. Higher data visualisation literacy levels were associated with a reduced effect, but accounting for data visualisation did not eliminate this effect.
+
+Even though the charts only displayed data on the chance of negative outcomes occurring, ratings of severity of consequences were also greater when data points were presented at high positions. The effect on severity ratings was not associated with differences in data visualisation literacy.
 
 # Experiment 2
 
