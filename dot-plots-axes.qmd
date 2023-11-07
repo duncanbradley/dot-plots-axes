@@ -1235,6 +1235,7 @@ This model employed random intercepts for each scenario, plus random intercepts 
 
 ### Data Visualisation Literacy
 
+
 ```{r}
 #| label: E2-cl
 #| eval: !expr params$eval_models
@@ -1242,7 +1243,7 @@ This model employed random intercepts for each scenario, plus random intercepts 
 
 # generate E2 chance (magnitude) rating model with literacy as additional fixed effect
 E2_cl <- clmm(add.terms(formula(E2_c), "literacy"),
-              data = E1_tidy)
+              data = E2_tidy)
 ```
 
 ```{r}
@@ -1256,6 +1257,38 @@ E2_sl <- clmm(add.terms(formula(E2_s), "literacy"),
 ```
 
 ```{r}
+#| label: E2-clint
+#| eval: !expr params$eval_models
+#| cache: !expr params$eval_models
+
+E2_clint <- buildclmm(chance_slider.response ~ condition*literacy + 
+                    (1 + condition | participant) +
+                    (1 + condition*literacy | item_no),
+                  buildmerControl=list(                         include='chance_slider.response ~ condition*literacy'), 
+                    data = E2_tidy)
+
+emtrends(E2_clint@model, pairwise ~ condition, var = "literacy")
+
+emmip(E2_clint@model, condition ~ literacy, cov.reduce = range)
+```
+
+```{r}
+#| label: E2-slint
+#| eval: !expr params$eval_models
+#| cache: !expr params$eval_models
+
+E2_slint <- buildclmm(severity_slider.response ~ condition*literacy + 
+                    (1 + condition | participant) +
+                    (1 + condition*literacy | item_no),
+                  buildmerControl=list(                         include='severity_slider.response ~ condition*literacy'), 
+                    data = E2_tidy)
+
+emtrends(E2_slint@model, pairwise ~ condition, var = "literacy")
+
+emmip(E2_slint@model, condition ~ literacy, cov.reduce = range)
+```
+
+```{r}
 #| label: E2-lit-summary
 
 # summary output for E2 chance (magnitude) rating model with literacy
@@ -1263,9 +1296,71 @@ summary_extract(E2_cl, "condition1")
 
 # summary output for E2 severity rating model with literacy
 summary_extract(E2_sl, "condition1")
+
+# summary output for E2 chance (magnitude) rating model with literacy
+summary_extract(E2_clint, "condition1:literacy")
+
+# summary output for E2 severity rating model with literacy
+summary_extract(E2_slint, "condition1:literacy")
+
+emtrends(E2_clint@model, "condition", var = "literacy") %>% 
+  as_tibble() %>% 
+  group_split(condition) %>% map(~ {
+    vals <- as.list(.x)
+    names(vals) <- paste0("E2_clint", 
+                          "_", 
+                          .x$condition, 
+                          "_", 
+                          names(vals))
+    list2env(vals, envir = globalenv())
+})
 ```
 
-Adjusting for participants' data visualisation literacy scores did not change the pattern of results regarding ratings of the magnitude of data points themselves (z = `r printnum(abs(E2_cl.statistic))`, p `r printp(E2_cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_cl.estimate))`, `r print_confint(rev(1/exp(E2_cl.CI)), conf.int = 0.95)`) or the severity of consequences (z = `r printnum(abs(E2_sl.statistic))`, p `r printp(E2_sl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_sl.estimate))`, `r print_confint(rev(1/exp(E2_sl.CI)), conf.int = 0.95)`).
+Adjusting for participants' data visualisation literacy scores did not change the pattern of results regarding ratings of the magnitude of data points themselves (z = `r printnum(abs(E2_cl.c.statistic))`, p `r printp(E2_cl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_cl.c.estimate))`, `r print_confint(rev(1/exp(E2_cl.c.CI)), conf.int = 0.95)`) or the severity of consequences (z = `r printnum(abs(E2_sl.c.statistic))`, p `r printp(E2_sl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_sl.c.estimate))`, `r print_confint(rev(1/exp(E2_sl.c.CI)), conf.int = 0.95)`).
+
+For magnitude ratings, there was an interaction between data visualisation literacy and physical position: z = `r printnum(abs(E2_clint.cl.statistic))`, p `r printp(E2_clint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_clint.cl.estimate))`, `r print_confint(exp(E2_clint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E2_clint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_clint.cl.estimate))))` effect size. The difference between magnitude ratings for data points presented at different positions diminished as data visualisation literacy increased. This is shown in @fig-E2-clint. This model employed random intercepts for scenarios with slopes for literacy. The model formula was as follows: `` `r paste(print_formula(E2_clint))` ``
+
+```{r}
+#| label: fig-E2-clint
+#| include: true
+#| fig-scap: The interaction between data visualisation literacy and physical position, for magnitude ratings in Experiment 2.
+#| fig-cap: "The interaction between data visualisation literacy and physical position, for magnitude ratings in Experiment 2. On the y-axis, the grey horizontal lines depict the thresholds between the seven response categories for magnitude ratings, from 'Very unlikely' to 'Very likely'. The data displayed are based on the estimated marginal means from the interaction model. Note that this interaction is associated with a very small effect size."
+my_palette <- unname(palette.colors(palette = "Okabe-Ito")[2:3])
+
+Thresh = E2_clint@model$Theta
+Slopes = E2_clint@model$coefficients
+Literacy = E2_tidy$literacy
+
+emmip(E2_clint@model, condition ~ literacy, cov.reduce = range) +
+lims(y = c(min(Thresh)-0.7,
+             max(Thresh)+0.7)) +
+  geom_hline(yintercept = c(unname(Thresh)), colour = "lightgrey") +
+  theme_minimal(base_size = 10) +
+  theme(panel.grid.minor = element_blank(),
+                panel.grid.major = element_blank(),
+        plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5)) +
+  annotate("text",
+           y = c(min(Thresh)-0.7,
+                 max(Thresh)+0.7), 
+           x = max(Literacy)-(max(Literacy)-min(Literacy))/2, 
+           label = c("Very unlikely", "Very likely"),
+           size = 3,
+           colour = "darkgrey") +
+  labs(title = "Experiment 2:\nData Visualisation Literacy x Physical Position Interaction",
+       subtitle = "Estimated Marginal Means", 
+    x = "Data Visualisation Literacy Score",
+       y = "Magnitude Rating",
+       colour = "Physical Position",
+    linewidth = NULL) +
+  scale_color_manual(limits = c('lo', 'hi'), 
+                       labels = c('Low', 'High'),
+                   values = my_palette) +
+  theme(axis.text.y = element_blank()) +
+  geom_line(linewidth = 1.5, linetype = "solid")
+```
+
+For ratings of the severity of consequences, there was no significant interaction between physical position and data visualisation literacy: z = `r printnum(abs(E2_slint.cl.statistic))`, p `r printp(E2_slint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_slint.cl.estimate))`, `r print_confint(exp(E2_slint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E2_slint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_slint.cl.estimate))))` effect size. This model employed random intercepts for scenarios with slopes for literacy, plus random intercepts for participants with slopes for position. The model formula was as follows: `` `r paste(print_formula(E2_slint))` ``
 
 ## Discussion
 
