@@ -332,15 +332,29 @@ summary_extract <- function(model, key_term) {
 
     assign(value = one_row %>% pull(param),
            envir = .GlobalEnv,
-           paste0(model_name, ".", param))
+           paste0(model_name, 
+                  ".", 
+                  str_c(unlist(
+                    str_extract_all(
+                      key_term,
+                      "\\b\\w")),
+                    collapse = ""),
+                  ".",
+                  param))
     }
 
     lapply(params, get_cols)
     
-    
     assign(value = confint(model)[key_term,],
            envir = .GlobalEnv,
-           paste0(model_name, ".CI"))
+           paste0(model_name,
+                  ".", 
+                  str_c(unlist(
+                    str_extract_all(
+                      key_term,
+                      "\\b\\w")),
+                    collapse = ""),
+                  ".CI"))
 
 }
 ```
@@ -594,11 +608,11 @@ likert_plot <- function(df) {
                                 "\"Very\nlikely\""), 
                        breaks = c(0, n_obs),
                        position = "top") +
-    theme_minimal(base_size = 18) +
-    theme(axis.text.x = element_text(face = "italic", color=c(brewer.pal(n = 9, name = 'RdBu')[7], brewer.pal(n = 9, name = 'RdBu')[1])),
+    theme_minimal(base_size = 12) +
+    theme(axis.text.x = element_text(face = "italic", color=c(brewer.pal(n = 9, name = 'RdBu')[8], brewer.pal(n = 9, name = 'RdBu')[2])),
           legend.position = "none",
           panel.grid = element_blank(),
-          plot.title = element_text(size=18, hjust = 0.5)) +
+          plot.title = element_text(size=12, hjust = 0.5)) +
     coord_fixed(ratio = n_obs/15, 
                 ylim = c(0.5, 2.5), 
                 xlim = c(0, n_obs+n_obs/10),
@@ -687,6 +701,71 @@ A likelihood ratio test reveals that a model including physical position as a fi
 The odds ratio for the difference between conditions is `r printnum(exp(E1_c.c.estimate))`, `r print_confint(exp(E1_c.c.CI))`. Participants were `r printnum(exp(E1_c.c.estimate))` times more likely to respond with a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_c.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_c.c.estimate))))` effect size.
 
 This model included random intercepts for each participant and each scenario.
+
+```{r}
+#| label: fig-combined
+#| fig-cap: example example example example example example example example example example example example example example example example example example example example example
+#| out-width: "600px"
+#| out-height: "300px"
+#| fig-asp: 0.5
+#| include: true
+#| fig.env: figure*
+#| fig-pos: 't'
+# for top of two column output:
+# https://quarto.org/docs/authoring/figures.html#figure-position
+# https://github.com/quarto-dev/quarto-cli/discussions/4399#discussioncomment-5069622
+combined_df <- rbind(E1_tidy %>% 
+                       select(condition,
+                              chance_slider.response) %>% 
+                       cbind(experiment = "E1"),
+                     E2_tidy %>% 
+                       select(condition,
+                              chance_slider.response) %>%
+                       cbind(experiment = "E2"))
+
+ori_labs <- c("Conventional Axis Orientation", 
+                 "Inverted Axis Orientation")
+names(ori_labs) <- c("E1", "E2")
+
+# create likert plot for E2 data - chance (magnitude) ratings
+combined_plot <- likert_plot(combined_df) + facet_wrap(~ experiment, ncol = 1, labeller = labeller(experiment = ori_labs)) +
+  labs(title = "Ratings of Data Points' Magnitudes\n
+       Experiments 1 and 2")
+
+combined_prop <- combined_df %>%
+  group_by(condition, experiment, chance_slider.response) %>%
+  summarize(freq = n(),
+            raw = round((n())/3000*100, 0),
+            perc = paste0(round((n())/3000*100, 0), "%")) %>% ungroup() %>%
+  filter(raw > 3)
+
+combined_plot <- combined_plot + geom_text(
+  data=combined_prop,
+  aes(x=freq, label=(perc)),
+  position = position_stack(reverse = TRUE, vjust = 0.6),
+  color="black", size=2.8
+) +
+    coord_fixed(ratio = 200, ylim = c(0.5, 2.5), 
+                xlim = c(0, 3000+3000/10),
+                clip = "off", expand = FALSE) +
+  scale_x_continuous(labels=c("\"Very\nunlikely\"",
+                                "\"Very\nlikely\""), 
+                       breaks = c(0, 3000),
+                       position = "top") +
+  geom_segment(x=300, y=4, xend=2750, yend=4,
+               colour = "grey35",
+               arrow=arrow(ends = "both", type = "closed", length = unit(7, "pt")), data = combined_df %>% slice_head(n = 1))
+
+combined_plot
+```
+
+here @fig-combined test
+
+```{r}
+#| include: true
+knitr::knit_exit()
+```
+
 
 ### Severity Ratings
 
@@ -900,7 +979,7 @@ Previous research suggests that charts with inverted axes can be prone to misint
 
 # create my theme
 my_theme <- function() {
-  theme_minimal(base_size = 12) +
+  theme_minimal(base_size = 10) +
     theme(panel.border = element_rect(fill = NA, linewidth = 1),
           panel.grid.minor = element_blank(),
           panel.grid.major = element_blank(),
@@ -910,7 +989,7 @@ my_theme <- function() {
           axis.title.y = element_text(size = 12, face = "bold"),
           axis.text.y = element_text(size = 12, colour = "black", face = "bold"),
           plot.title = element_text(face = "bold"),
-          aspect.ratio = 1.5,
+          aspect.ratio = 0.5,
     )
 }
 
@@ -1064,9 +1143,9 @@ We used the same analysis methods as in Experiment 1.
 ```{r}
 #| label: fig-E2-c
 #| include: true
-#| out-width: "340px"
-#| out-height: "119px"
-#| fig-asp: 0.35
+#| out-height: "100px"
+#| out-width: "100px"
+#| fig-asp: 1
 #| fig-cap: The distribution of Likert scale ratings of data points' magnitudes, in Experiment 2. The width of each response option represents the proportion of ratings recorded for that option. Note that data points presented at high physical positions (top) elicited a larger proportion of ratings on the left-hand side (representing *smaller* magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the right-hand side (representing *larger* magnitudes).
 #| fig-alt: "A horizontal stacked bar chart, showing the responses at each Likert scale category for data points presented at high and low physical positions. The title reads 'Experiment 2 (Inverted Axes): Ratings of Data Points' Magnitudes'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. For the 'high' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very likely' end of the scale."
 
@@ -1092,54 +1171,6 @@ L2 <- L2 + geom_text(
 
 L2
 ```
-
-```{r}
-#| label: fig-combined
-#| fig-cap: example example example example example example example example example example example example example example example example example example example example example
-#| include: true
-#| fig.env: figure*
-#| fig-pos: 't'
-# for top of two column output:
-# https://quarto.org/docs/authoring/figures.html#figure-position
-# https://github.com/quarto-dev/quarto-cli/discussions/4399#discussioncomment-5069622
-combined_df <- rbind(E1_tidy %>% 
-                       select(condition,
-                              chance_slider.response) %>% 
-                       cbind(experiment = "E1"),
-                     E2_tidy %>% 
-                       select(condition,
-                              chance_slider.response) %>%
-                       cbind(experiment = "E2"))
-
-ori_labs <- c("Conventional Axis Orientation", 
-                 "Inverted Axis Orientation")
-names(ori_labs) <- c("E1", "E2")
-
-# create likert plot for E2 data - chance (magnitude) ratings
-combined_plot <- likert_plot(combined_df) + facet_wrap(~ experiment, ncol = 1, labeller = labeller(experiment = ori_labs)) +
-  geom_segment(x=100, y=3.8, xend=650, yend=3.8,
-               arrow=arrow(ends = "both", type = "closed", length = unit(7, "pt")), data = combined_df %>% slice_head(n = 1)) +
-  labs(title = "Ratings of Data Points' Magnitudes\n
-       Experiments 1 and 2")
-
-combined_prop <- combined_df %>%
-  group_by(condition, experiment, chance_slider.response) %>%
-  summarize(freq = n(),
-            raw = round(n()/720*100, 0),
-            perc = paste0(round(n()/720*100, 0), "%")) %>% ungroup() %>%
-  filter(raw > 3)
-
-combined_plot <- combined_plot + geom_text(
-  data=combined_prop,
-  aes(x=freq, label=(perc)),
-  position = position_stack(reverse = TRUE, vjust = 0.6),
-  color="black", size=2.8
-)
-
-combined_plot
-```
-
-here @fig-combined test
 
 ```{r}
 #| label: E2-c
