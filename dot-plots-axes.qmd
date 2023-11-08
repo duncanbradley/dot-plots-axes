@@ -624,39 +624,6 @@ likert_plot <- function(df) {
 ### Magnitude Ratings
 
 ```{r}
-#| label: fig-E1-c
-#| include: true
-#| out-width: "340px"
-#| out-height: "119px"
-#| fig-asp: 0.35
-#| fig-cap: The distribution of Likert scale ratings of the magnitude of data points, in Experiment 1. The width of each response option represents the proportion of ratings recorded for that option. Note that data points presented at high physical positions (top) elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the left-hand side (representing smaller magnitudes).
-#| fig-alt: "A horizontal stacked bar chart, showing the responses at each Likert scale category for data points presented at high and low physical positions. The title reads 'Experiment 1: Ratings of Data Points' Magnitudes'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. For the 'high' condition, there are a greater proportion of responses at the 'Very likely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale."
-
-# create Likert plot for E1 data - chance (magnitude) ratings
-L1 <- likert_plot(E1_tidy) +
-  annotate("segment", x=400, y=3.2, xend=2700, yend=3.2,
-           arrow=arrow(ends = "both", type = "closed", length = unit(10, "pt"))) +
-  labs(title = "Experiment 1:\nRatings of Data Points' Magnitudes")
-
-E1_prop <- E1_tidy %>%
-  group_by(condition, chance_slider.response) %>%
-  summarize(freq = n(),
-            raw = round(n()/3000*100, 0),
-            perc = paste0(round(n()/3000*100, 0), "%")) %>%
-  ungroup() %>%
-  filter(raw > 3)
-
-L1 <- L1 + geom_text(
-  data=E1_prop,
-  aes(x=freq, label=(perc), group=condition),
-  position = position_stack(reverse = TRUE, vjust = 0.5),
-  color="black", size=2.8
-)
-
-L1
-```
-
-```{r}
 #| label: E1-c
 #| eval: !expr params$eval_models
 #| cache: !expr params$eval_models
@@ -695,23 +662,16 @@ summary_extract(E1_c, "condition1")
 add_header_above(kable(random_str(E1_c), "latex"), "E1_c")
 ```
 
-@fig-E1-c plots the distribution of ratings of data points' magnitudes. Values presented at high physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at low physical positions.
-
-A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect: $\chi^2$(`r in_paren(E1_c.df)`) = `r printnum(E1_c.LR)`, p `r printp(E1_c.p, add_equals = TRUE)`. Data points' magnitudes were rated as greater when those data points were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_c.c.statistic))`, p `r printp(E1_c.c.p.value, add_equals = TRUE)`).
-
-The odds ratio for the difference between conditions is `r printnum(exp(E1_c.c.estimate))`, `r print_confint(exp(E1_c.c.CI))`. Participants were `r printnum(exp(E1_c.c.estimate))` times more likely to respond with a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_c.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_c.c.estimate))))` effect size.
-
-This model included random intercepts for each participant and each scenario.
-
 ```{r}
 #| label: fig-combined
-#| fig-cap: example example example example example example example example example example example example example example example example example example example example example
 #| out-width: "600px"
 #| out-height: "300px"
 #| fig-asp: 0.5
 #| include: true
 #| fig.env: figure*
 #| fig-pos: 't'
+#| fig-cap: The distribution of Likert scale ratings of the magnitude of data points, shown separately for charts with conventional axes (Experiment 1) and charts with inverted axes (Experiment 2). The width of each response option represents the proportion of ratings recorded for that option. In Experiment 1, data points presented at high physical positions (top) elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the left-hand side (representing smaller magnitudes). In Experiment 2, this pattern was reversed, with data points at low physical positions (bottom), which elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes).
+#| fig-alt: "Horizontal stacked bar charts, showing the responses at each Likert scale category for data points presented at high and low physical positions, shown separately in Experiment 1 (conventional axis orientations) and Experiment 2 (inverted axis orientations). The title reads 'Ratings of Data Points' Magnitudes'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. In Experiment 1, for the 'high' condition, there are a greater proportion of responses at the 'Very likely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale. In Experiment 2, this pattern is reversed."
 # for top of two column output:
 # https://quarto.org/docs/authoring/figures.html#figure-position
 # https://github.com/quarto-dev/quarto-cli/discussions/4399#discussioncomment-5069622
@@ -759,7 +719,13 @@ combined_plot <- combined_plot + geom_text(
 combined_plot
 ```
 
-here @fig-combined test
+@fig-combined plots the distribution of ratings of data points' magnitudes. Values presented at high physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at low physical positions.
+
+A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect: $\chi^2$(`r in_paren(E1_c.df)`) = `r printnum(E1_c.LR)`, p `r printp(E1_c.p, add_equals = TRUE)`. Data points' magnitudes were rated as greater when those data points were presented at high physical positions, compared to when the same data points were presented at low physical positions (z = `r printnum(abs(E1_c.c.statistic))`, p `r printp(E1_c.c.p.value, add_equals = TRUE)`).
+
+The odds ratio for the difference between conditions is `r printnum(exp(E1_c.c.estimate))`, `r print_confint(exp(E1_c.c.CI))`. Participants were `r printnum(exp(E1_c.c.estimate))` times more likely to respond with a higher magnitude rating to data points presented at high positions than data points presented at low positions. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_c.c.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_c.c.estimate))))` effect size.
+
+This model included random intercepts for each participant and each scenario.
 
 ### Severity Ratings
 
@@ -1100,38 +1066,6 @@ We used the same analysis methods as in Experiment 1.
 ### Magnitude Ratings
 
 ```{r}
-#| label: fig-E2-c
-#| include: true
-#| out-height: "100px"
-#| out-width: "100px"
-#| fig-asp: 1
-#| fig-cap: The distribution of Likert scale ratings of data points' magnitudes, in Experiment 2. The width of each response option represents the proportion of ratings recorded for that option. Note that data points presented at high physical positions (top) elicited a larger proportion of ratings on the left-hand side (representing *smaller* magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the right-hand side (representing *larger* magnitudes).
-#| fig-alt: "A horizontal stacked bar chart, showing the responses at each Likert scale category for data points presented at high and low physical positions. The title reads 'Experiment 2 (Inverted Axes): Ratings of Data Points' Magnitudes'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. For the 'high' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very likely' end of the scale."
-
-# create likert plot for E2 data - chance (magnitude) ratings
-L2 <- likert_plot(E2_tidy) +
-  annotate("segment", x=400, y=3.2, xend=2700, yend=3.2,
-           arrow=arrow(ends = "both", type = "closed", length = unit(10, "pt"))) +
-  labs(title = "Experiment 2 (Inverted Axes):\nRatings of Data Points' Magnitudes")
-
-E2_prop <- E2_tidy %>%
-  group_by(condition, chance_slider.response) %>%
-  summarize(freq = n(),
-            raw = round(n()/3000*100, 0),
-            perc = paste0(round(n()/3000*100, 0), "%")) %>% ungroup() %>%
-  filter(raw > 3)
-
-L2 <- L2 + geom_text(
-  data=E2_prop,
-  aes(x=freq, label=(perc), group=condition),
-  position = position_stack(reverse = TRUE, vjust = 0.5),
-  color="black", size=2.8
-)
-
-L2
-```
-
-```{r}
 #| label: E2-c
 #| eval: !expr params$eval_models
 #| cache: !expr params$eval_models
@@ -1170,7 +1104,7 @@ summary_extract(E2_c, "condition1")
 add_header_above(kable(random_str(E2_c), "latex"), "E2_c")
 ```
 
-@fig-E2-c plots the distribution of ratings of data points' magnitudes, showing that values presented at *low* physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at *high* physical positions.
+@fig-combined plots the distribution of ratings of data points' magnitudes. Values presented at *low* physical positions elicited a greater proportion of responses at the higher end of the rating scale than values presented at *high* physical positions.
 
 A likelihood ratio test reveals that a model including physical position as a fixed effect explains significantly more variability in ratings than a model which does not include physical position as a fixed effect ($\chi^2$(`r in_paren(E2_c.df)`) = `r printnum(E2_c.LR)`, p `r printp(E2_c.p, add_equals = TRUE)`). Data points' magnitudes were rated as larger when those data points were presented at *low* physical positions, compared to when the same data points were presented at high physical positions, in contrast to the findings in Experiment 1 (z = `r printnum(abs(E2_c.c.statistic))`, p `r printp(E2_c.c.p.value, add_equals = TRUE)`).
 
