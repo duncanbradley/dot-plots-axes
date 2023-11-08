@@ -105,6 +105,7 @@ library(kableExtra)
 library(effectsize)
 library(qwraps2)
 library(RColorBrewer)
+library(emmeans)
 
 set.seed(45789) # seed for random number generation
 #tlmgr_install('collection-fontsrecommended') # additional font collection required for Docker
@@ -723,14 +724,13 @@ combined_df <- rbind(E1_tidy %>%
                               chance_slider.response) %>%
                        cbind(experiment = "E2"))
 
-ori_labs <- c("Conventional Axis Orientation", 
-                 "Inverted Axis Orientation")
+ori_labs <- c("Conventional Axis Orientation (Experiment 1)", 
+                 "Inverted Axis Orientation (Experiment 2)")
 names(ori_labs) <- c("E1", "E2")
 
 # create likert plot for E2 data - chance (magnitude) ratings
 combined_plot <- likert_plot(combined_df) + facet_wrap(~ experiment, ncol = 1, labeller = labeller(experiment = ori_labs)) +
-  labs(title = "Ratings of Data Points' Magnitudes\n
-       Experiments 1 and 2")
+  labs(title = "Ratings of Data Points' Magnitudes")
 
 combined_prop <- combined_df %>%
   group_by(condition, experiment, chance_slider.response) %>%
@@ -760,12 +760,6 @@ combined_plot
 ```
 
 here @fig-combined test
-
-```{r}
-#| include: true
-knitr::knit_exit()
-```
-
 
 ### Severity Ratings
 
@@ -898,51 +892,16 @@ emtrends(E1_clint@model, "condition", var = "literacy") %>%
 })
 ```
 
-```{r}
-#| label: fig-E1-clint
-#| include: true
-#| fig-scap: The interaction between data visualisation literacy and the physical position of data points, for magnitude ratings in Experiment 1.
-#| fig-cap: "The interaction between data visualisation literacy and the physical position of data points, for magnitude ratings in Experiment 1. On the y-axis, the grey horizontal lines depict the thresholds between the seven response categories for magnitude ratings, from 'Very unlikely' to 'Very likely'. The data displayed are based on the estimated marginal means from the interaction model. Note that this interaction is associated with a very small effect size."
-my_palette <- unname(palette.colors(palette = "Okabe-Ito")[2:3])
-
-Thresh = E1_clint@model$Theta
-Slopes = E1_clint@model$coefficients
-Literacy = E1_tidy$literacy
-
-emmip(E1_clint@model, condition ~ literacy, cov.reduce = range) +
-lims(y = c(min(Thresh)-0.7,
-             max(Thresh)+0.7)) +
-  geom_hline(yintercept = c(unname(Thresh)), colour = "lightgrey") +
-  theme_minimal(base_size = 10) +
-  theme(panel.grid.minor = element_blank(),
-                panel.grid.major = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5)) +
-  annotate("text",
-           y = c(min(Thresh)-0.7,
-                 max(Thresh)+0.7), 
-           x = max(Literacy)-(max(Literacy)-min(Literacy))/2, 
-           label = c("Very unlikely", "Very likely"),
-           size = 3,
-           colour = "darkgrey") +
-  labs(title = "Experiment 1:\nData Visualisation Literacy x Physical Position Interaction",
-       subtitle = "Estimated Marginal Means",
-    x = "Data Visualisation Literacy Score",
-       y = "Magnitude Rating",
-       colour = "Physical Position",
-    linewidth = NULL) +
-  scale_color_manual(limits = c('hi', 'lo'), 
-                       labels = c('High', 'Low'),
-                   values = my_palette) +
-  theme(axis.text.y = element_blank()) +
-  geom_line(linewidth = 1.5, linetype = "solid")
-```
-
 Adjusting for participants' data visualisation literacy scores did not eliminate the effect of the position of data points on ratings of magnitude (z = `r printnum(abs(E1_cl.c.statistic))`, p `r printp(E1_cl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_cl.c.estimate))`, `r print_confint(exp(E1_cl.c.CI))`) or the severity of consequences (z = `r printnum(abs(E1_sl.c.statistic))`, p `r printp(E1_sl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_sl.c.estimate))`, `r print_confint(exp(E1_sl.c.CI))`). These models were identical to the above models except for the inclusion of subjective data visualisation literacy scores as an additional fixed effect.
 
-However, further analysis found that, for magnitude ratings, there was an interaction between physical position and data visualisation literacy: z = `r printnum(abs(E1_clint.cl.statistic))`, p `r printp(E1_clint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_clint.cl.estimate))`, `r print_confint(exp(E1_clint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_clint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_clint.cl.estimate))))` effect size. The difference between magnitude ratings for data points presented at different positions diminished as data visualisation literacy increased. This is shown in @fig-E1-clint. This model employed random intercepts for scenarios with random slopes for literacy, plus random intercepts for participants.
+However, further analysis found that, for magnitude ratings, there was an interaction between physical position and data visualisation literacy: z = `r printnum(abs(E1_clint.cl.statistic))`, p `r printp(E1_clint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_clint.cl.estimate))`, `r print_confint(exp(E1_clint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_clint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_clint.cl.estimate))))` effect size. The difference between magnitude ratings for data points presented at different positions diminished as data visualisation literacy increased. This model employed random intercepts for scenarios with random slopes for literacy, plus random intercepts for participants.
 
 For ratings of the severity of consequences, there was no significant interaction between physical position and data visualisation literacy: z = `r printnum(abs(E1_slint.cl.statistic))`, p `r printp(E1_slint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_slint.cl.estimate))`, `r print_confint(exp(E1_slint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_slint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_slint.cl.estimate))))` effect size. This model employed random intercepts for participants with random slopes for position, plus random intercepts for scenarios with random slopes for literacy.
+
+```{r}
+#| include: true
+knitr::knit_exit()
+```
 
 ## Discussion
 
@@ -1348,47 +1307,7 @@ emtrends(E2_clint@model, "condition", var = "literacy") %>%
 
 Adjusting for participants' data visualisation literacy scores did not change the pattern of results regarding ratings of the magnitude of data points themselves (z = `r printnum(abs(E2_cl.c.statistic))`, p `r printp(E2_cl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_cl.c.estimate))`, `r print_confint(rev(1/exp(E2_cl.c.CI)), conf.int = 0.95)`) or the severity of consequences (z = `r printnum(abs(E2_sl.c.statistic))`, p `r printp(E2_sl.c.p.value, add_equals = TRUE)`, odds ratio = `r printnum(1/exp(E2_sl.c.estimate))`, `r print_confint(rev(1/exp(E2_sl.c.CI)), conf.int = 0.95)`).
 
-For magnitude ratings, there was an interaction between data visualisation literacy and physical position: z = `r printnum(abs(E2_clint.cl.statistic))`, p `r printp(E2_clint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_clint.cl.estimate))`, `r print_confint(exp(E2_clint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E2_clint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_clint.cl.estimate))))` effect size. The difference between magnitude ratings for data points presented at different positions diminished as data visualisation literacy increased. This is shown in @fig-E2-clint. This model employed random intercepts for scenarios with slopes for literacy.
-
-```{r}
-#| label: fig-E2-clint
-#| include: true
-#| fig-scap: The interaction between data visualisation literacy and physical position, for magnitude ratings in Experiment 2.
-#| fig-cap: "The interaction between data visualisation literacy and physical position, for magnitude ratings in Experiment 2. On the y-axis, the grey horizontal lines depict the thresholds between the seven response categories for magnitude ratings, from 'Very unlikely' to 'Very likely'. The data displayed are based on the estimated marginal means from the interaction model. Note that this interaction is associated with a very small effect size."
-my_palette <- unname(palette.colors(palette = "Okabe-Ito")[2:3])
-
-Thresh = E2_clint@model$Theta
-Slopes = E2_clint@model$coefficients
-Literacy = E2_tidy$literacy
-
-emmip(E2_clint@model, condition ~ literacy, cov.reduce = range) +
-lims(y = c(min(Thresh)-0.7,
-             max(Thresh)+0.7)) +
-  geom_hline(yintercept = c(unname(Thresh)), colour = "lightgrey") +
-  theme_minimal(base_size = 10) +
-  theme(panel.grid.minor = element_blank(),
-                panel.grid.major = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5)) +
-  annotate("text",
-           y = c(min(Thresh)-0.7,
-                 max(Thresh)+0.7), 
-           x = max(Literacy)-(max(Literacy)-min(Literacy))/2, 
-           label = c("Very unlikely", "Very likely"),
-           size = 3,
-           colour = "darkgrey") +
-  labs(title = "Experiment 2:\nData Visualisation Literacy x Physical Position Interaction",
-       subtitle = "Estimated Marginal Means", 
-    x = "Data Visualisation Literacy Score",
-       y = "Magnitude Rating",
-       colour = "Physical Position",
-    linewidth = NULL) +
-  scale_color_manual(limits = c('lo', 'hi'), 
-                       labels = c('Low', 'High'),
-                   values = my_palette) +
-  theme(axis.text.y = element_blank()) +
-  geom_line(linewidth = 1.5, linetype = "solid")
-```
+For magnitude ratings, there was an interaction between data visualisation literacy and physical position: z = `r printnum(abs(E2_clint.cl.statistic))`, p `r printp(E2_clint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_clint.cl.estimate))`, `r print_confint(exp(E2_clint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E2_clint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_clint.cl.estimate))))` effect size. The difference between magnitude ratings for data points presented at different positions diminished as data visualisation literacy increased. This model employed random intercepts for scenarios with slopes for literacy.
 
 For ratings of the severity of consequences, there was no significant interaction between physical position and data visualisation literacy: z = `r printnum(abs(E2_slint.cl.statistic))`, p `r printp(E2_slint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E2_slint.cl.estimate))`, `r print_confint(exp(E2_slint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E2_slint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E2_slint.cl.estimate))))` effect size. This model employed random intercepts for scenarios with slopes for literacy, plus random intercepts for participants with slopes for position.
 
