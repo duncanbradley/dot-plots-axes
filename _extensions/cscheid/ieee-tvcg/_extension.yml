@@ -30,6 +30,7 @@ contributes:
       # biblio-config: false
       # Content to add in header that your format is using
       header-includes: |
+        \usepackage{biblatex}
         \usepackage{orcidlink}
         \definecolor{mypink}{RGB}{219, 48, 122}
       template-partials:
