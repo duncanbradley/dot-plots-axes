@@ -14,3 +14,17 @@ insight
 kableExtra
 effectsize
 qwraps2
+tinylabels
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+lubridate
+tinytex
+Matrix
+RColorBrewer
+emmeans
