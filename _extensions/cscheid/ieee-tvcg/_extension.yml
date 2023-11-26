@@ -31,6 +31,9 @@ contributes:
       # Content to add in header that your format is using
       header-includes: |
         \usepackage{biblatex}
+        \usepackage{natbib}
+        \usepackage{href}
+        \usepackage{url}
         \usepackage{orcidlink}
         \definecolor{mypink}{RGB}{219, 48, 122}
       template-partials:
@@ -41,6 +44,7 @@ contributes:
       format-resources:
         # Add here the resources required for the PDF rendering
         - vgtc.cls
+        - abbrv-doi-hyperref-narrow.bst
         - abbrvnatdoi.bst
         - diamondrule.pdf
         - diamondrule.eps

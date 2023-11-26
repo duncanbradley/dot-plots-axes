@@ -44,7 +44,7 @@
 
 %% it is recomended to use ``\autoref{sec:bla}'' instead of ``Fig.~\ref{sec:bla}''
 %% \graphicspath{{figures/}{pictures/}{images/}{./}} % where to search for the images
-
+\usepackage{hyperref}
 \usepackage{microtype}                 % use micro-typography (slightly more compact, better to read)
 \PassOptionsToPackage{warn}{textcomp}  % to address font issues with \textrightarrow
 \usepackage{textcomp}                  % use better special symbols
@@ -62,6 +62,7 @@
 $if(natbib)$
 \usepackage[numbers, sort]{natbib}
 \usepackage{url}
+
 \def\UrlBreaks{\do\/\do-}
 $endif$
 
@@ -85,10 +86,10 @@ $_preamble.tex()$
 $body$
 
 %\bibliographystyle{abbrv}
-%\bibliographystyle{abbrvnatdoi}
+\bibliographystyle{abbrvnatdoi}
 %\bibliographystyle{abbrv-doi-narrow}
 %\bibliographystyle{abbrv-doi-hyperref}
-\bibliographystyle{abbrv-doi-hyperref-narrow}
+%\bibliographystyle{abbrv-doi-hyperref-narrow}
 
 \bibliography{bibliography}
 \end{document}
