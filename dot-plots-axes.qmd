@@ -900,7 +900,7 @@ Previous research suggests that charts with inverted axes can be prone to misint
 
 # create my theme
 my_theme <- function() {
-  theme_minimal(base_size = 10) +
+  theme_minimal(base_size = 12) +
     theme(panel.border = element_rect(fill = NA, linewidth = 1),
           panel.grid.minor = element_blank(),
           panel.grid.major = element_blank(),
@@ -910,7 +910,7 @@ my_theme <- function() {
           axis.title.y = element_text(size = 12, face = "bold"),
           axis.text.y = element_text(size = 12, colour = "black", face = "bold"),
           plot.title = element_text(face = "bold"),
-          aspect.ratio = 0.5,
+          aspect.ratio = 1.5,
     )
 }
 
@@ -1009,7 +1009,7 @@ invisible(do.call(mapply, c(create_plot, unname(id))))
 
 # add all four plots together, with addition y-axis labels
 ghc +  ggtitle('Conventional') + ylab("HIGH\nPhysical Position\n\n") +
-  ghi + ggtitle('Inverted') + glc + ylab("LOW\nPhysical Position\n\n") + gli 
+  ghi + ggtitle('Inverted') + glc + ylab("LOW\nPhysical Position\n\n") + gli
 ```
 
 ## Method
@@ -1263,7 +1263,7 @@ In addition to the conceptual metaphor for magnitude, physical positions are als
 
 ## Additional Findings
 
-Prior research has observed positive correlations between perceptions of event probability and outcome magnitude [@harris_communicating_2011; @harris_estimating_2009; @kupor_probable_2020]. We did not find robust evidence that assessments of the severity of consequences were affected by our manipulation of data points representing the chance of events occurring. However, whereas prior work substantially manipulated underlying scenarios, our subtler manipulation retained the same probability values, changing only the surrounding context. In addition, participants evaluated the severity of an event's *consequences*, which is one step removed from the property explored in prior research: the potency of the event itself. The effects of axis limits on interpretation of data about the incidence of events do not reliably extend to judgements about their consequences.
+Prior research has observed positive correlations between perceptions of event probability and outcome magnitude [@harris_communicating_2011; @harris_estimating_2009; @kupor_probable_2020]. We did not find robust evidence that assessments of the severity of consequences were affected by our manipulation of data points representing the chance of events occurring. However, whereas prior work substantially manipulated underlying scenarios, our subtler manipulation retained the same probability values, changing only the surrounding context. In addition, participants evaluated the severity of an event's *consequences*, which is one step removed from the property explored in prior research: the severity of the event itself. The effects of axis limits on interpretation of data about the incidence of events do not reliably extend to judgements about their consequences.
 
 Adjusting for subjective data visualisation literacy did not change the overall pattern of results in either of the experiments. This indicates that any biases observed cannot be fully explained by differences in data visualisation literacy. Despite observing that bias *reduced* as data visualisation literacy increased, the effect sizes associated with these interactions were very small. Thus, the data visualisation literacy measure provided low explanatory power. @yang_truncating_2021 also observed that data visualisation literacy could not sufficiently explain variance in the degree of bias caused by y-axis truncation. This measure reflects comprehension of the conventions of data visualisation, indicating receipt of elementary instruction [@okan_how_2016]. Therefore, it is perhaps better suited for capturing viewers' application of basic knowledge in interpretation [@yang_truncating_2021], whereas Ge et al.'s CALVI test [@ge_calvi_2023] may be more appropriate for predicting susceptibility to differences in presentation format.
 
