@@ -497,8 +497,8 @@ For each dataset, we generated three values from a normal distribution. Populati
 ```{r}
 #| label: fig-example-charts
 #| include: true
-#| out-width: "600px"
-#| out-height: "360px"
+#| out-width: "300px"
+#| out-height: "180px"
 #| fig-asp: 0.6
 #| fig-cap: Example charts, taken from Experiment 1. The *high physical position* condition (left) presents data points near the top of the chart; the *low physical position* condition (right) presents the same data points near the bottom of the chart.
 #| fig-alt: Two dot plots, where plotted data points are repsented by small black circles. In the left dot plot, the y-axis ranges from 61.5% to 71.5%, thus the three data points, which are around the 70% point, appear near the top of the axis. In the right chart, the y-axis ranges from 68.5% to 78.5%, thus the same three data points appear near the bottom of the axis. Each y-axis is labelled 'Chance (%)', accompanied by an upwards arrow.  
