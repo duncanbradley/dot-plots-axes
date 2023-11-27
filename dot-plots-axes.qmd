@@ -665,8 +665,8 @@ add_header_above(kable(random_str(E1_c), "latex"), "E1_c")
 
 ```{r}
 #| label: fig-combined
-#| out-width: "600px"
-#| out-height: "300px"
+#| out-width: "650px"
+#| out-height: "325px"
 #| fig-asp: 0.5
 #| include: true
 #| fig.env: figure*
