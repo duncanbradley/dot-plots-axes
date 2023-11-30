@@ -1,4 +1,4 @@
-# Magnitude Judgements Are Influenced by Data Points’ Relative Positions Within Axis Limits
+# Magnitude Judgements Are Influenced by the Relative Positions of Data Points Within Axis Limits
 
 * Data is in the `data` folder (this also contains the script for anonymising original data files)
 * Analysis code is in the `dot-plots-axes.qmd` (quarto) file
@@ -16,5 +16,5 @@ We provide resources for re-creating the computational environment (R version, p
 7. Enter `rstudio` as the username and `password` as the password. 
 8. Open `dot-plots-axes.qmd` and press Render to generate `dot-plots-axes.pdf`
 
-Note: Computationally intensive statistical models have been saved in `dot-plots-axes_cache`. To speed-up rendering, these cached models are loaded instead of executing the code that generated them. To generate models from scratch, change the `eval_models` parameter in line 5 to `true`.
+Note: Computationally intensive statistical models have been saved in `dot-plots-axes_cache/pdf`. To speed-up rendering, these cached models are loaded instead of executing the code that generated them. To generate models from scratch, change the `eval_models` parameter in line 5 to `true`.
 
