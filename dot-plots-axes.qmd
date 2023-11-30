@@ -385,7 +385,7 @@ It is unclear exactly how a viewer's inferences about magnitude might be influen
 
 ##### Overview
 
-In two experiments, we manipulated the axis limits surrounding plotted data. The same data points either appeared close to the upper end of an axis range, or close to the lower end. Likert scale ratings of the magnitude of data points were higher when data points were positioned close to the end of the axis which was associated with higher numbers. By employing charts with conventional and inverted y-axis orientations to distinguish between possible explanations, we reveal that magnitude judgements are influenced by the *relative* positions of data points within axis limits.
+In two experiments, we manipulated the axis limits surrounding plotted data. This affected the physical positions of data points, but also the *relative* positions of data points within axis limits: their proximity to the highest and lowest axis values. Likert scale ratings of the magnitude of data points were higher when data points were positioned close to the end of the axis which was associated with higher numbers. By employing charts with conventional and inverted y-axis orientations to distinguish between possible explanations, we reveal that magnitude judgements are influenced by the *relative* positions of data points within axis limits.
 
 Data, analysis code, experimental scripts, materials, and interactive versions of the experiments are available at https://osf.io/3epm2/. We also provide all necessary resources for running a Docker container, within which the computational environment used for analysis is recreated, meaning a fully-reproducible version of this paper can be generated.
 
@@ -497,8 +497,8 @@ For each dataset, we generated three values from a normal distribution. Populati
 ```{r}
 #| label: fig-example-charts
 #| include: true
-#| out-width: "300px"
-#| out-height: "180px"
+#| out-width: "330px"
+#| out-height: "198px"
 #| fig-asp: 0.6
 #| fig-cap: Example charts, taken from Experiment 1. The *high physical position* condition (left) presents data points near the top of the chart; the *low physical position* condition (right) presents the same data points near the bottom of the chart.
 #| fig-alt: Two dot plots, where plotted data points are repsented by small black circles. In the left dot plot, the y-axis ranges from 61.5% to 71.5%, thus the three data points, which are around the 70% point, appear near the top of the axis. In the right chart, the y-axis ranges from 68.5% to 78.5%, thus the same three data points appear near the bottom of the axis. Each y-axis is labelled 'Chance (%)', accompanied by an upwards arrow.  
@@ -890,9 +890,9 @@ Previous research suggests that charts with inverted axes can be prone to misint
 ```{r}
 #| label: fig-rationale
 #| include: true
-#| out-width: "340px"
-#| out-height: "238px"
-#| fig-asp: 0.7
+#| fig-asp: 0.75
+#| out-width: "360px"
+#| out-height: "270px"
 #| fig-cap: "Rationale for Experiment 2: distinguishing the roles of physical position and relative position. In charts with conventional axis orientations (left column), there is congruence between data points’ physical positions and their relative positions within axis limits. In charts with inverted axis orientations (right column), there is incongruence between data points’ physical positions and their relative positions within axis limits. This allows us to examine which cue informs magnitude judgements."
 #| fig-alt: "A 2x2 grid of dot plots. Where data points are plotted at a high physical position, using a conventional axis, the label reads 'Plotted values have HIGH relative position'. Where data points are plotted at a low physical position, using a conventional axis, the label reads 'Plotted values have LOW relative position'. Where data points are plotted at a high physical position, using an inverted axis, the label reads 'Plotted values have LOW relative position'. Where data points are plotted at a low physical position, using an inverted axis, the label reads 'Plotted values have HIGH relative position'."
 
@@ -1008,8 +1008,8 @@ create_plot <- function(pos, orientation){
 invisible(do.call(mapply, c(create_plot, unname(id))))
 
 # add all four plots together, with addition y-axis labels
-ghc +  ggtitle('Conventional') + ylab("HIGH\nPhysical Position\n\n") +
-  ghi + ggtitle('Inverted') + glc + ylab("LOW\nPhysical Position\n\n") + gli
+ghc +  ggtitle('Conventional', subtitle = 'Axis Orientation') +  ylab("HIGH\nPhysical Position\n\n") +
+  ghi + ggtitle('Inverted', subtitle = 'Axis Orientation') + glc + ylab("LOW\nPhysical Position\n\n") + gli
 ```
 
 ## Method
@@ -1243,7 +1243,9 @@ For ratings of the severity of consequences, there was no significant interactio
 
 ## Discussion
 
-This experiment demonstrates that inferences about the magnitude of data points are informed primarily by their *relative* positions within axis limits, as opposed to their physical positions. Viewing data in charts with inverted y-axes, participants rated the same values as greater when these values were plotted at *low* physical positions, compared to *high* physical positions. Ratings reflecting higher magnitudes were awarded more frequently to charts where data points were positioned near the bottom, where the axis limit was associated with a *higher* numerical value. Ratings of the severity of consequences were not significantly affected by the position of data points representing the chance of negative events occurring. Overall, accounting for differences in data visualisation literacy did not alter the pattern of results, but higher data visualisation literacy scores were associated with a diminished effect of physical position, for magnitude ratings.
+This experiment demonstrates that inferences about the magnitude of data points are informed primarily by their *relative* positions within axis limits, as opposed to their physical positions. Viewing data in charts with inverted y-axes, participants rated the same values as greater when these values were plotted at *low* physical positions, compared to *high* physical positions. Ratings reflecting higher magnitudes were awarded more frequently to charts where data points were positioned near the bottom, where the axis limit was associated with a *higher* numerical value. Therefore, axis limits inform judgements primarily through inferences about the numerical context surrounding data points, rather than the connotations of their physical positions.
+
+Ratings of the severity of consequences were not significantly affected by the position of data points representing the chance of negative events occurring. Overall, accounting for differences in data visualisation literacy did not alter the pattern of results, but higher data visualisation literacy scores were associated with a diminished effect of physical position, for magnitude ratings.
 
 # General Discussion
 
