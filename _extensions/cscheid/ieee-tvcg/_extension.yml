@@ -41,6 +41,7 @@ contributes:
         - "partials/_preamble.tex"
         - "partials/_authors.tex"
         - "partials/before-body.tex"
+        - "partials/_biosketches.tex"
       format-resources:
         # Add here the resources required for the PDF rendering
         - vgtc.cls

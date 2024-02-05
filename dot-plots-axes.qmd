@@ -29,6 +29,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0001-7328-8779 
     email: duncan.bradley@manchester.ac.uk
+    bio: insert db
   - name: Gabriel Strain
     affiliations:
       - name: The University of Manchester
@@ -39,6 +40,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0002-4769-9221
     email: gabriel.strain@manchester.ac.uk
+    bio: insert gs
   - name: Caroline Jay
     affiliations:
       - name: The University of Manchester
@@ -49,6 +51,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0002-6080-1382
     email: caroline.jay@manchester.ac.uk
+    bio: insert cj
   - name: Andrew J. Stewart
     affiliations:
       - name: The University of Manchester
@@ -59,6 +62,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0002-9795-4104 
     email: andrew.stewart@manchester.ac.uk
+    bio: insert ajs
       
 abstract: |
   When visualising data, chart designers have the freedom to choose the upper and lower limits of numerical axes. Axis limits can determine the physical characteristics of plotted values, such as the physical position of data points in dot plots. In two experiments (total N=300), we demonstrate that axis limits affect viewers' interpretations of the magnitudes of plotted values. Participants did not simply associate values presented at higher vertical positions with greater magnitudes. Instead, participants considered the relative positions of data points within the axis limits. Data points were considered to represent larger values when they were closer to the end of the axis associated with greater values, even when they were presented at the *bottom* of a chart. This provides further evidence of framing effects in the display of data, and offers insight into the cognitive mechanisms involved in assessing magnitude in data visualisations.
@@ -1279,3 +1283,7 @@ This study was designed to explore one factor involved in assessing magnitude. T
 # Conclusion
 
 We conducted two experiments investigating how axis limits inform interpretations of the magnitude of plotted values. Subjective judgements were affected by the positions of data points in relation to accompanying axis limits. The association between the positions of data points and magnitude judgements critically depends on whether plotted data appear closer to the axis limit associated with higher or lower values. The cognitive processes associated with assessing magnitude in data visualisations involve taking into account the context in which the data appear.
+
+# Acknowledgements {.unnumbered}
+
+This work was supported by the Economic and Social Research Council [grant number ES/P000665/1].
