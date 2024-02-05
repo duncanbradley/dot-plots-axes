@@ -669,7 +669,7 @@ add_header_above(kable(random_str(E1_c), "latex"), "E1_c")
 #| fig-asp: 0.5
 #| include: true
 #| fig.env: figure*
-#| fig-pos: 't'
+#| fig-pos: 'ht'
 #| fig-cap: The distribution of Likert scale ratings of the magnitude of data points, shown separately for charts with conventional axes (Experiment 1) and charts with inverted axes (Experiment 2). The width of each response option represents the proportion of ratings recorded for that option. In Experiment 1, data points presented at high physical positions (top) elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes), compared to data points at low physical positions (bottom), which elicited a larger proportion of ratings on the left-hand side (representing smaller magnitudes). In Experiment 2, this pattern was reversed, with data points at low physical positions (bottom), which elicited a larger proportion of ratings on the right-hand side (representing greater magnitudes).
 #| fig-alt: "Horizontal stacked bar charts, showing the responses at each Likert scale category for data points presented at high and low physical positions, shown separately in Experiment 1 (conventional axis orientations) and Experiment 2 (inverted axis orientations). The title reads 'Ratings of the Magnitude of Data Points'. The label 'Very unlikely' appears on the far left, and the label 'Very likely' appears on the far right. In Experiment 1, for the 'high' condition, there are a greater proportion of responses at the 'Very likely' end of the scale. For the 'low' condition, there are a greater proportion of responses at the 'Very unlikely' end of the scale. In Experiment 2, this pattern is reversed."
 # for top of two column output:
@@ -864,33 +864,13 @@ However, further analysis found that, for magnitude ratings, there was an intera
 
 For ratings of the severity of consequences, there was no significant interaction between physical position and data visualisation literacy: z = `r printnum(abs(E1_slint.cl.statistic))`, p `r printp(E1_slint.cl.p.value, add_equals = TRUE)`, odds ratio = `r printnum(exp(E1_slint.cl.estimate))`, `r print_confint(exp(E1_slint.cl.CI))`. This is equivalent to a Cohen's d value of `r printnum(abs(oddsratio_to_d(exp(E1_slint.cl.estimate))))`, a `r paste(interpret_cohens_d(oddsratio_to_d(exp(E1_slint.cl.estimate))))` effect size. This model employed random intercepts for participants with random slopes for position, plus random intercepts for scenarios with random slopes for literacy.
 
-## Discussion
-
-This experiment demonstrates that axis limits, which determine the position of plotted values, influence inferences about the magnitude of data points. Participants rated *the same values* as greater when these values were plotted at high positions, compared to low positions. This difference is associated with a small effect size. Higher data visualisation literacy levels were associated with a reduced effect, but accounting for data visualisation did not eliminate this effect.
-
-Even though the charts only displayed data on the chance of negative outcomes occurring, ratings of severity of consequences were also greater when data points were presented at high positions. The effect on severity ratings was not associated with differences in data visualisation literacy.
-
-# Experiment 2
-
-## Introduction
-
-Experiment 1 (E1) found that participants associated data points with greater magnitudes when those data points were positioned near the *top* of a chart, compared to when the same data points were positioned near the *bottom* of a chart.
-
-One possible explanation for this finding is that participants made simple associations between physical position and magnitude, equating physically higher data points with larger magnitudes and physically lower data points with smaller magnitudes. This is congruent with well-established conceptual metaphors for magnitude, where greater vertical positions denote greater magnitudes [@tversky_cognitive_1997].
-
-An alternative explanation is that participants used the y-axis as a frame of reference for assessing the magnitude of plotted values. For example, when considering data points near the bottom of the axis, participants may have recognised the potential for values larger than those observed, consequently associating plotted values with smaller magnitudes.
-
-Experiment 1 does not provide a means of differentiating these competing explanations. Drawing inferences from the physical positions of data points would bias magnitude judgements in the same direction as drawing inferences from their relative position within axis limits. A high magnitude is implied by a data point's high physical position *and* its superior position in the context other of presented values. Therefore, an additional experiment is required in order to distinguish between the two competing explanations.
-
-Plotting numerical values along the x-axis would not assist in answering this question, since values that are large in the context of the x-axis limits would be positioned on the right-hand side, which is also typically associated with larger magnitudes [@woodin_placing_2018]. However, inverting a vertical axis changes the typical relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. Therefore, inferences invoking relative position would bias magnitude judgements in the opposite direction compared to inferences invoking the physical positions of data points. This is illustrated in @fig-rationale. In Experiment 2, we manipulate the physical positions of data points by changing axis limits (as in Experiment 1), but employ inverted y-axes.
-
-Previous research suggests that charts with inverted axes can be prone to misinterpretation when viewers are not informed about the inversion [@pandey_how_2015; @woodin_conceptual_2022]. Therefore, we provided explicit instruction to ensure participants were aware that inverted charts were presented.
-
 ```{r}
 #| label: fig-rationale
 #| include: true
 #| fig-asp: 0.75
-#| out-width: "360px"
+#| fig-env: "figure"
+#| fig-pos: 'phb'
+#| out-width: "100px"
 #| out-height: "270px"
 #| fig-cap: "Rationale for Experiment 2: distinguishing the roles of physical position and relative position. In charts with conventional axis orientations (left column), there is congruence between data points’ physical positions and their relative positions within axis limits. In charts with inverted axis orientations (right column), there is incongruence between data points’ physical positions and their relative positions within axis limits. This allows us to examine which cue informs magnitude judgements."
 #| fig-alt: "A 2x2 grid of dot plots. Where data points are plotted at a high physical position, using a conventional axis, the label reads 'Plotted values have HIGH relative position'. Where data points are plotted at a low physical position, using a conventional axis, the label reads 'Plotted values have LOW relative position'. Where data points are plotted at a high physical position, using an inverted axis, the label reads 'Plotted values have LOW relative position'. Where data points are plotted at a low physical position, using an inverted axis, the label reads 'Plotted values have HIGH relative position'."
@@ -1010,6 +990,28 @@ invisible(do.call(mapply, c(create_plot, unname(id))))
 ghc +  ggtitle('Conventional', subtitle = 'Axis Orientation') +  ylab("HIGH\nPhysical Position\n\n") +
   ghi + ggtitle('Inverted', subtitle = 'Axis Orientation') + glc + ylab("LOW\nPhysical Position\n\n") + gli
 ```
+
+## Discussion
+
+This experiment demonstrates that axis limits, which determine the position of plotted values, influence inferences about the magnitude of data points. Participants rated *the same values* as greater when these values were plotted at high positions, compared to low positions. This difference is associated with a small effect size. Higher data visualisation literacy levels were associated with a reduced effect, but accounting for data visualisation did not eliminate this effect.
+
+Even though the charts only displayed data on the chance of negative outcomes occurring, ratings of severity of consequences were also greater when data points were presented at high positions. The effect on severity ratings was not associated with differences in data visualisation literacy.
+
+# Experiment 2
+
+## Introduction
+
+Experiment 1 (E1) found that participants associated data points with greater magnitudes when those data points were positioned near the *top* of a chart, compared to when the same data points were positioned near the *bottom* of a chart.
+
+One possible explanation for this finding is that participants made simple associations between physical position and magnitude, equating physically higher data points with larger magnitudes and physically lower data points with smaller magnitudes. This is congruent with well-established conceptual metaphors for magnitude, where greater vertical positions denote greater magnitudes [@tversky_cognitive_1997].
+
+An alternative explanation is that participants used the y-axis as a frame of reference for assessing the magnitude of plotted values. For example, when considering data points near the bottom of the axis, participants may have recognised the potential for values larger than those observed, consequently associating plotted values with smaller magnitudes.
+
+Experiment 1 does not provide a means of differentiating these competing explanations. Drawing inferences from the physical positions of data points would bias magnitude judgements in the same direction as drawing inferences from their relative position within axis limits. A high magnitude is implied by a data point's high physical position *and* its superior position in the context other of presented values. Therefore, an additional experiment is required in order to distinguish between the two competing explanations.
+
+Plotting numerical values along the x-axis would not assist in answering this question, since values that are large in the context of the x-axis limits would be positioned on the right-hand side, which is also typically associated with larger magnitudes [@woodin_placing_2018]. However, inverting a vertical axis changes the typical relationship between physical position and numerical value: increasingly *lower* positions represent increasingly *higher* numerical values. This means data points presented near the *bottom* of a chart are numerically *larger* than the accompanying y-axis values. Therefore, inferences invoking relative position would bias magnitude judgements in the opposite direction compared to inferences invoking the physical positions of data points. This is illustrated in @fig-rationale. In Experiment 2, we manipulate the physical positions of data points by changing axis limits (as in Experiment 1), but employ inverted y-axes.
+
+Previous research suggests that charts with inverted axes can be prone to misinterpretation when viewers are not informed about the inversion [@pandey_how_2015; @woodin_conceptual_2022]. Therefore, we provided explicit instruction to ensure participants were aware that inverted charts were presented.
 
 ## Method
 
