@@ -29,7 +29,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0001-7328-8779 
     email: duncan.bradley@manchester.ac.uk
-    bio: insert db
+    bio: is a PhD student in the Division of Psychology, Communication and Human Neuroscience at the University of Manchester. His dissertation focuses on understanding the effects of data visualisation design choices on interpretations of numerical magnitude.
   - name: Gabriel Strain
     affiliations:
       - name: The University of Manchester
@@ -40,7 +40,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0002-4769-9221
     email: gabriel.strain@manchester.ac.uk
-    bio: insert gs
+    bio: is a PhD student in the Department of Computer Science at the University of Manchester. His research interests include data visualisation design, visual perception, trust, and explainable AI.
   - name: Caroline Jay
     affiliations:
       - name: The University of Manchester
@@ -51,7 +51,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0002-6080-1382
     email: caroline.jay@manchester.ac.uk
-    bio: insert cj
+    bio: is a Professor of Computer Science at the University of Manchester. Her research focuses on software engineering and human-computer interaction. She uses empirical methods to study and innovate in health science, creative media, and knowledge representation. 
   - name: Andrew J. Stewart
     affiliations:
       - name: The University of Manchester
@@ -62,7 +62,7 @@ author:
         postal-code: M13 9PL
     orcid: 0000-0002-9795-4104 
     email: andrew.stewart@manchester.ac.uk
-    bio: insert ajs
+    bio: is a Professor of Cognitive Science at the University of Manchester. His research uses computational perspectives to understand human cognition. His research interests include conditionals, experimental pragmatics, data visualisation, open science, and reproducible research.
       
 abstract: |
   When visualising data, chart designers have the freedom to choose the upper and lower limits of numerical axes. Axis limits can determine the physical characteristics of plotted values, such as the physical position of data points in dot plots. In two experiments (total N=300), we demonstrate that axis limits affect viewers' interpretations of the magnitudes of plotted values. Participants did not simply associate values presented at higher vertical positions with greater magnitudes. Instead, participants considered the relative positions of data points within the axis limits. Data points were considered to represent larger values when they were closer to the end of the axis associated with greater values, even when they were presented at the *bottom* of a chart. This provides further evidence of framing effects in the display of data, and offers insight into the cognitive mechanisms involved in assessing magnitude in data visualisations.
