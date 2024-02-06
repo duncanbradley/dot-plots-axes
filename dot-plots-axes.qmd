@@ -1286,4 +1286,4 @@ We conducted two experiments investigating how axis limits inform interpretation
 
 # Acknowledgements {.unnumbered}
 
-This work was supported by the Economic and Social Research Council [grant number ES/P000665/1].
+This work was supported by the Economic and Social Research Council [grant number ES/P000665/1]. For the purpose of open access, the authors have applied a Creative Commons Attribution (CC BY) license to any Accepted Manuscript version arising.
